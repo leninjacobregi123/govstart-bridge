@@ -1,6 +1,6 @@
 """Step 4: stamp out the 21 pages from one shared chrome template."""
 import re, os
-ROOT = "/home/lenin/Apps Developed/SIH 26136/govstart-bridge"
+ROOT = "/home/lenin/Apps Developed/SIH 26136/docs"
 body = open("/home/lenin/Apps Developed/SIH 26136/build/_body.html", encoding="utf-8").read()
 
 # ---------------------------------------------------------------- chrome

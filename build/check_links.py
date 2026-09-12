@@ -1,6 +1,6 @@
 """Verification 2: every internal link must resolve to a real file and a real anchor."""
 import os, re, glob, sys
-ROOT="/home/lenin/Apps Developed/SIH 26136/govstart-bridge"
+ROOT="/home/lenin/Apps Developed/SIH 26136/docs"
 pages={os.path.basename(p) for p in glob.glob(os.path.join(ROOT,"*.html"))}
 ids={}
 for p in pages:

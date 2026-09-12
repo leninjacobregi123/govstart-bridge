@@ -5,7 +5,7 @@ with no #mktGrid simply skips renderMarket() instead of throwing and killing all
 subsequent JS on that page."""
 import re, sys
 
-APP = "/home/lenin/Apps Developed/SIH 26136/govstart-bridge/assets/app.js"
+APP = "/home/lenin/Apps Developed/SIH 26136/docs/assets/app.js"
 js = open(APP, encoding="utf-8").read()
 
 # function name -> id of the element it cannot run without

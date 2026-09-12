@@ -1,6 +1,6 @@
 """Step 3: turn in-page navigation into real page navigation."""
 import re
-APP = "/home/lenin/Apps Developed/SIH 26136/govstart-bridge/assets/app.js"
+APP = "/home/lenin/Apps Developed/SIH 26136/docs/assets/app.js"
 js = open(APP, encoding="utf-8").read()
 
 PAGES = '''

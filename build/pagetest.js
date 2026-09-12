@@ -1,5 +1,5 @@
 const {JSDOM,VirtualConsole}=require('jsdom'),fs=require('fs'),path=require('path');
-const ROOT="/home/lenin/Apps Developed/SIH 26136/govstart-bridge";
+const ROOT="/home/lenin/Apps Developed/SIH 26136/docs";
 const css=fs.readFileSync(path.join(ROOT,"assets/style.css"),"utf8");
 const app=fs.readFileSync(path.join(ROOT,"assets/app.js"),"utf8");
 const pages=fs.readdirSync(ROOT).filter(f=>f.endsWith(".html")).sort();

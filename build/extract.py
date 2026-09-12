@@ -3,7 +3,7 @@ single-page build into assets/, replacing data: URIs with relative paths."""
 import re, os, base64, json, sys
 
 SRC = "/home/lenin/Apps Developed/SIH 26136/.govstart-bridge.singlepage.bak.html"
-OUT = "/home/lenin/Apps Developed/SIH 26136/govstart-bridge"
+OUT = "/home/lenin/Apps Developed/SIH 26136/docs"
 IMG = os.path.join(OUT, "assets", "img")
 os.makedirs(IMG, exist_ok=True)
 
