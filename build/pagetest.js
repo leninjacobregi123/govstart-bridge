@@ -8,7 +8,8 @@ const ck=(l,c,x="")=>{c?(pass++):(fail++,console.log("  FAIL  "+l+(x?"  <- "+x:"
 
 // what each page must render, beyond the shared chrome
 const EXPECT={
- "index.html":            ["#why .rev", ".hero h1", ".strip [data-count]"],
+ "index.html":            [".hero h1", ".doorgrid .door", ".doors-alt a"],
+ "why-its-hard.html":     ["#why .rev", ".strip [data-count]"],
  "run-a-challenge.html":  ["#steps a", ".stage .card"],
  "where-it-runs.html":    ["#divGrid .divcard", ".photostrip .mphoto", ".warli-medallion"],
  "marketplace.html":      ["#mktGrid .lcard", "#catChips .chip"],
@@ -24,6 +25,26 @@ const EXPECT={
  "grievance.html":        ["#grvList", "#gv_txt"],
  "contact.html":          [".contact-grid .cbox"],
 };
+Object.assign(EXPECT,{
+ "categories.html":       ["#catChips .chip","#mktGrid .lcard"],
+ "products.html":         ["#mktGrid .lcard"],
+ "services.html":         ["#mktGrid .lcard"],
+ "skill-purchase.html":   ["#mktGrid .lcard"],
+ "sellers.html":          ["#pageBody .kv"],
+ "licence.html":          ["#pageBody table"],
+ "become-a-seller.html":  ["#pageBody .steps-mini"],
+ "buyer-login.html":      ["#pageBody .otpwrap"],
+ "buyer-registration.html":["#pageBody input"],
+ "buyer-background.html": ["#pageBody .tick"],
+ "skill.html":            ["#skillPane .card"],
+ "employment.html":       ["#skillPane .card"],
+ "entrepreneurship.html": ["#skillPane .card"],
+ "templates.html":        ["#resPane .lcard"],
+ "government-laws.html":  ["#resPane .lcard"],
+ "working-reports.html":  ["#resPane .lcard"],
+ "apps.html":             ["#resPane .appcard"],
+ "training-videos.html":  ["#vidGrid .vid"],
+});
 for(let i=1;i<=6;i++) EXPECT[`step-${i}-${["define-the-problem","cap-the-risk","see-whos-eligible","design-the-pilot","run-and-validate","buy-it-lawfully"][i-1]}.html`]=["#steps a","#railList dt",".pane"];
 
 (async()=>{
