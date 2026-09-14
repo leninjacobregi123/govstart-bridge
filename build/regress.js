@@ -59,7 +59,7 @@ ck("payment ticket gets the 7-day clock", c.getElementById("grvList").textConten
 d.window.close();
 d=open_("where-it-runs.html");w=d.window;c=w.document;
 ck("six revenue divisions", c.querySelectorAll("#divGrid .divcard").length===6);
-ck("photo strip with credits", c.querySelectorAll(".photostrip .mphoto").length===5 &&
+ck("photo strip with credits", c.querySelectorAll(".photostrip .mphoto").length===6 &&   // one per revenue division
    c.querySelector(".photocredit").textContent.includes("CC BY-SA"));
 d.window.close();
 d=open_("skill-gap.html");w=d.window;c=w.document;
@@ -69,7 +69,7 @@ d.window.close();
 console.log("--- accessibility controls survive on every page ---");
 d=open_("about.html");w=d.window;c=w.document;
 w.toggleHC(); ck("high contrast toggles", c.body.classList.contains("hc"));
-w.toggleLang(); ck("Marathi toggles", c.documentElement.lang==="mr" && c.getElementById("navlinks").textContent.includes("आव्हान"));
+w.toggleLang(); ck("Marathi toggles", c.documentElement.lang==="mr" && c.getElementById("navlinks").textContent.includes("यंत्रणा"));
 ck("page breadcrumb not clobbered by the language switch",
    c.querySelector('[data-i18n="crumb"]').textContent.trim().length>0);
 w.toggleLang(); w.toggleHC();

@@ -8,7 +8,8 @@ const ck=(l,c,x="")=>{c?(pass++):(fail++,console.log("  FAIL  "+l+(x?"  <- "+x:"
 
 // what each page must render, beyond the shared chrome
 const EXPECT={
- "index.html":            [".hero h1", ".doorgrid .door", ".doors-alt a"],
+ "index.html":            [".hero h1", "#gap .card", "#idea .contract", ".stepstrip .stepchip", ".proofcard .minidemo", ".doorgrid .door"],
+ "department-services.html":[".deptgroup", ".deptcard"],
  "why-its-hard.html":     ["#why .rev", ".strip [data-count]"],
  "run-a-challenge.html":  ["#steps a", ".stage .card"],
  "where-it-runs.html":    ["#divGrid .divcard", ".photostrip .mphoto", ".warli-medallion"],

@@ -166,7 +166,45 @@ function openModal(t,h){
   }""",1)
 
 js = js.replace("/* ===== deep links",
-"""/* ===== sub-feature pages: one feature, one URL ===== */
+"""/* ===== landing page: three live proof teasers =====
+   These reuse sha256(), relax() and the tier logic rather than duplicating them. */
+function proofSeal(){
+  const el=$("pf_kpi"); if(!el) return;
+  const SEALED="\u2264 60 min";
+  const live=sha256(JSON.stringify({target:el.value}));
+  const ref =sha256(JSON.stringify({target:SEALED}));
+  $("pf_hash").textContent=live;
+  const ok=live===ref, st=$("pf_state");
+  st.className="ministate "+(ok?"ok":"bad");
+  st.textContent=ok?"\u2713 Matches the published seal":"\u26a0 Seal broken \u2014 the bar moved, and anyone can prove it";
+}
+function proofRisk(){
+  const el=$("pf_risk"); if(!el) return;
+  const v=parseInt(el.value,10);
+  const r=v<=5?["Full relaxation lawful","ok"]
+        :v<=11?["Partial relaxation","warn"]
+              :["No relaxation \u2014 shrink the pilot instead","bad"];
+  const st=$("pf_relax");
+  st.className="ministate "+r[1];
+  st.textContent=v+"/20 \u00b7 "+r[0];
+}
+function proofTier(){
+  const el=$("pf_case"); if(!el) return;
+  const m={gr:["Tier 1 \u2014 Proprietary Article Certificate","ok"],
+           nogr:["Tier 3 \u2014 Tier 1 needs a state GR, so it falls back","warn"],
+           multi:["Tier 2 \u2014 limited tender to the winners","ok"],
+           wide:["Tier 3 \u2014 GeM catalogue replication","ok"],
+           fail:["No route \u2014 and that is the system working","bad"]}[el.value];
+  const st=$("pf_tier");
+  st.className="ministate "+m[1];
+  st.textContent=m[0];
+}
+function initProof(){
+  if(!$("pf_kpi")) return;
+  proofSeal(); proofRisk(); proofTier();
+}
+
+/* ===== sub-feature pages: one feature, one URL ===== */
 function initSubPage(){
   const cfg=window.PAGE_FEATURE;
   if(!cfg)return;
@@ -189,5 +227,19 @@ function initSubPage(){
 
 /* ===== deep links""",1)
 js = js.replace("  applyHash();\n  paintStepPage();","  initSubPage();\n  applyHash();\n  paintStepPage();",1)
+js = js.replace("  initSubPage();\n", "  initSubPage();\n  initProof();\n", 1)
+# the regrouped navigation needs its own Marathi strings
+js = js.replace(' nav_run:["Run a challenge","\u0906\u0935\u094d\u0939\u093e\u0928 \u091a\u093e\u0932\u0935\u093e"],',
+ ' nav_run:["Run a challenge","\u0906\u0935\u094d\u0939\u093e\u0928 \u091a\u093e\u0932\u0935\u093e"],\n'
+ ' nav_mech:["The mechanism","\u092f\u0902\u0924\u094d\u0930\u0923\u093e"],\n'
+ ' nav_ev:["Evidence &amp; rules","\u092a\u0941\u0930\u093e\u0935\u0947 \u0935 \u0928\u093f\u092f\u092e"],\n'
+ ' nav_dept:["Department services","\u0935\u093f\u092d\u093e\u0917\u0940\u092f \u0938\u0947\u0935\u093e"],', 1)
+
+# the films do not exist yet; an inert play button reads as broken
+js = js.replace('`<button class="vid" onclick="playVideo(${i})">',
+                '`<button class="vid soon" onclick="playVideo(${i})">')
+js = js.replace('<span class="pl" aria-hidden="true">\u25b6</span><span class="dur">${esc(v[1])}</span>',
+                '<span class="pl" aria-hidden="true">Script ready</span><span class="dur">${esc(v[1])}</span>')
+
 open(APP,"w",encoding="utf-8").write(js)
 print("navigation rewritten for multi-page")

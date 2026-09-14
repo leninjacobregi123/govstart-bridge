@@ -21,6 +21,16 @@ entirely from instruments that already exist: the startup relaxations in GFR Rul
 and 170(i), the proprietary route in Rule 166(i) reached the way DAP 2020 reaches it for
 iDEX winners, and the GeM Startup Runway catalogue as the replication rail.
 
+## How it is organised
+
+The site is written for someone meeting the idea for the first time. The landing page
+moves through **the gap → the idea → how it works → proof → enter**, and the navigation
+is five groups: *The mechanism*, *Marketplace*, *Evidence & rules*, *Department services*,
+*About*.
+
+Every photograph is tied to a place and captioned with it — one landmark per revenue
+division, from the Gateway of India in Konkan to Chikhaldara in Amravati.
+
 ## Try these
 
 | | |
@@ -29,7 +39,7 @@ iDEX winners, and the GeM Startup Runway catalogue as the replication rail.
 | [Step 1 — seal the criteria](https://leninjacobregi123.github.io/govstart-bridge/step-1-define-the-problem.html) | Press **Seal & publish**, then edit a target and watch the SHA-256 seal break |
 | [Step 2 — the risk ladder](https://leninjacobregi123.github.io/govstart-bridge/step-2-cap-the-risk.html) | Push every slider right; the platform refuses the relaxation and says why |
 | [Step 6 — buy it lawfully](https://leninjacobregi123.github.io/govstart-bridge/step-6-buy-it-lawfully.html) | Set one winner, same department, no GR — it falls back to Tier 3 rather than inventing a route |
-| [Where it runs](https://leninjacobregi123.github.io/govstart-bridge/where-it-runs.html) | All six revenue divisions |
+| [Where it runs](https://leninjacobregi123.github.io/govstart-bridge/where-it-runs.html) | All six revenue divisions, one photograph each |
 
 ## Feedback welcome
 
@@ -43,7 +53,7 @@ Open an issue, or just tell me. Particularly useful:
 ## Structure
 
 ```
-govstart-bridge/     40 pages + shared assets/  <- the site
+docs/                41 pages + shared assets/  <- the site (GitHub Pages serves this)
 build/               the one-shot migration and its test suites
 ```
 

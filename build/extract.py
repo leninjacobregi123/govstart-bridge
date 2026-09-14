@@ -55,7 +55,7 @@ css = re.sub(r"(\.hero)\{background-image:linear-gradient\([^;]*?url\('(data:[^'
              lambda m: m.group(0).replace(m.group(2), save_uri(m.group(2), "hero.webp")), css)
 
 # ---- photo-strip images live inline in the #statewide markup -------------
-PHOTO_ORDER = ["konkan", "pune", "nashik", "ajanta", "raigad"]
+PHOTO_ORDER = ["konkan", "pune", "nashik", "ajanta", "raigad"]  # amravati.webp referenced directly
 body = src
 photo_uris = re.findall(r"background-image:url\('(data:image/webp[^']+)'\)", body)
 photo_map = {}
@@ -64,12 +64,98 @@ for name, uri in zip(PHOTO_ORDER, photo_uris):
 for uri, path in photo_map.items():
     body = body.replace(uri, "assets/" + path)
 
+# Amravati had no photograph; Chikhaldara completes the six-division set.
+body = body.replace('</div><p class="cite photocredit">',
+  '<figure class="mphoto"><span class="mimg" '
+  'style="background-image:url(\'assets/img/amravati.webp\')" role="img" '
+  'aria-label="Chikhaldara, Amravati"></span>'
+  '<figcaption><b>Chikhaldara, Amravati</b><span>Amravati division</span></figcaption></figure>'
+  '</div><p class="cite photocredit">', 1)
+body = body.replace('Reused unaltered except for cropping and compression.',
+  ' &middot; <a href="https://commons.wikimedia.org/wiki/File:Chikhaldara.jpg" target="_blank" '
+  'rel="noopener">Chikhaldara, Amravati</a> \u2014 Manishjghurde (CC BY-SA 4.0). '
+  'Reused unaltered except for cropping and compression.', 1)
+
 # assets/style.css lives in assets/, so img/ is correct relative to it
 # the stepper is <a> in the multi-page build, not <button>
 css = css.replace(".steps button{", ".steps a{").replace(".steps button:hover{", ".steps a:hover{")
 css = css.replace('.steps button[aria-current="true"]{', '.steps a[aria-current="page"]{')
 css = css.replace(".steps button.done .sn:after{", ".steps a.done .sn:after{")
 css += """
+/* six divisions, six photographs */
+.photostrip{grid-template-columns:repeat(6,1fr)}
+@media(max-width:1100px){.photostrip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:620px){.photostrip{grid-template-columns:1fr 1fr}}
+
+/* training films are not produced yet - say so, rather than show a dead play button */
+.vid.soon{cursor:default}
+.vid.soon .vthumb .pl{background:rgba(255,255,255,.18);color:#fff;font-size:11px;
+  width:auto;height:auto;padding:6px 12px;border-radius:99px;letter-spacing:.06em;
+  text-transform:uppercase;font-weight:700}
+.vid.soon .vthumb{filter:saturate(.5)}
+
+section.pb-amravati,.pb-amravati{background-image:url(img/bg-amravati.webp)}
+
+/* ===== two-contract diagram (landing band 3) ===== */
+.contracts{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin-top:8px}
+.contract{border:1px solid var(--line);border-radius:14px;padding:22px;background:#fff}
+.contract.evi{border-top:4px solid var(--blue)}
+.contract.dep{border-top:4px solid var(--green)}
+.contract h4{font-size:17px;margin-bottom:3px}
+.contract .who{font-size:12px;color:var(--muted);margin-bottom:13px}
+.contract ul{list-style:none;font-size:13px;margin:0;padding:0}
+.contract li{padding:6px 0 6px 20px;position:relative;border-bottom:1px dashed var(--line-2)}
+.contract li:before{content:"\u25b8";position:absolute;left:2px;color:var(--blue)}
+.contract.dep li:before{color:var(--green)}
+.contract li:last-child{border-bottom:0}
+.gate{width:78px;display:grid;place-items:center}
+.gate span{writing-mode:vertical-rl;transform:rotate(180deg);font:800 10.5px/1 var(--sans);
+  letter-spacing:.16em;text-transform:uppercase;color:var(--red);background:var(--red-s);
+  border:1px solid var(--red-l);padding:14px 7px;border-radius:999px}
+@media(max-width:860px){
+  .contracts{grid-template-columns:1fr;gap:12px}
+  .gate{width:auto;height:52px}
+  .gate span{writing-mode:horizontal-tb;transform:none}
+}
+
+/* ===== landing: the six-step strip ===== */
+.stepstrip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.stepchip{display:flex;flex-direction:column;gap:5px;background:#fff;border:1px solid var(--line);
+  border-top:3px solid var(--saffron);border-radius:12px;padding:16px 14px;text-decoration:none;transition:.18s}
+.stepchip:hover{transform:translateY(-3px);box-shadow:var(--sh);text-decoration:none;border-color:var(--blue-l)}
+.sc-n{font:700 10.5px/1 var(--mono);letter-spacing:.1em;color:var(--blue)}
+.sc-i{font-size:21px;color:var(--blue);line-height:1}
+.stepchip b{font:600 14.5px/1.25 var(--serif);color:var(--ink)}
+.sc-d{font-size:11.5px;color:var(--muted);line-height:1.45}
+@media(max-width:1000px){.stepstrip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:620px){.stepstrip{grid-template-columns:1fr 1fr}}
+
+/* ===== landing: the three live proof cards ===== */
+.proofcard{display:flex;flex-direction:column;gap:8px}
+.proofcard h3{margin:8px 0 0}
+.proofcard>a{margin-top:auto;font:600 12.5px var(--sans);color:var(--blue);padding-top:4px}
+.minidemo{background:#faf6ef;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:4px}
+.minidemo label{font:700 10.5px/1 var(--sans);letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);display:block;margin-bottom:6px}
+.minidemo input[type=text],.minidemo input:not([type]),.minidemo select{padding:7px 9px;font-size:12.5px}
+.minihash{font:11px/1.5 var(--mono);word-break:break-all;color:var(--muted);margin-top:8px;
+  max-height:32px;overflow:hidden}
+.ministate{margin-top:8px;font:600 12px var(--sans);padding:7px 9px;border-radius:7px;border:1px solid}
+.ministate.ok{background:var(--green-s);border-color:var(--green);color:var(--green)}
+.ministate.bad{background:var(--red-s);border-color:var(--red);color:var(--red)}
+.ministate.warn{background:var(--amber-s);border-color:var(--amber);color:var(--amber)}
+.ministate.info{background:var(--blue-s);border-color:var(--blue-l);color:var(--blue)}
+
+/* ===== department services hub ===== */
+.deptgroup{margin-bottom:34px}
+.deptgroup h3{font-size:19px;margin-bottom:3px}
+.deptlede{font-size:13.5px;color:var(--muted);margin-bottom:14px}
+.deptcard{display:flex;flex-direction:column;gap:6px;text-decoration:none}
+.deptcard:hover{text-decoration:none}
+.deptcard h3{font-size:16px;margin:0}
+.deptcard p{color:var(--muted)}
+.deptgo{margin-top:auto;padding-top:10px;font:600 12.5px var(--sans);color:var(--blue)}
+
 /* ===== prototype banner: visible without scrolling on a public URL ===== */
 .protobar{background:#6d1b0b;color:#ffe6cf;border-bottom:2px solid var(--saffron);font-size:12.5px}
 .protobar .wrap{display:flex;align-items:center;gap:10px;padding:8px 24px;flex-wrap:wrap;justify-content:center;text-align:center}
@@ -164,6 +250,11 @@ body:has(.doors) .hero p{font-size:18px;max-width:560px}
 .steps a:hover{text-decoration:none}
 .crumbs .upd{margin-left:auto}
 """
+# hero lede measured 4.47:1 against the photograph - deepen the centre scrim to clear AA
+css = css.replace(
+ "radial-gradient(ellipse 70% 62% at 50% 46%,rgba(70,16,6,.52),rgba(70,16,6,.10) 70%,transparent 100%)",
+ "radial-gradient(ellipse 76% 68% at 50% 48%,rgba(64,13,4,.66),rgba(64,13,4,.20) 72%,transparent 100%)", 1)
+
 open(os.path.join(OUT, "assets", "style.css"), "w", encoding="utf-8").write(css)
 open(os.path.join(OUT, "assets", "app.js"),  "w", encoding="utf-8").write(js)
 open("/home/lenin/Apps Developed/SIH 26136/build/_body.html", "w", encoding="utf-8").write(body)

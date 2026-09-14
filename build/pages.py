@@ -5,6 +5,80 @@ body = open("/home/lenin/Apps Developed/SIH 26136/build/_body.html", encoding="u
 
 # ---------------------------------------------------------------- chrome
 top    = body[body.index('<a class="skip"') : body.index('<main>')]
+
+# ===================================================================
+#  NAVIGATION — five groups, each a coherent destination
+# ===================================================================
+def mm_col(title, items):
+    links = "".join('<a href="%s">%s<span class="n">%s</span></a>' % (h, l, n) for h, l, n in items)
+    return '<div><h5>%s</h5>%s</div>' % (title, links)
+
+def mega(mid, cols, foot=""):
+    return ('<div class="mm" id="mm-%s">%s%s</div>'
+            % (mid, "".join(mm_col(t, i) for t, i in cols),
+               '<div class="mm-foot">%s</div>' % foot if foot else ""))
+
+NAV_HTML = (
+ '<div class="mm-wrap"><button class="mmbtn" id="mmb-mech" aria-expanded="false" '
+   'aria-controls="mm-mech" onclick="mm(\'mech\')"><span data-i18n="nav_mech">The mechanism</span> <span class="cv">&#9660;</span></button>'
+ + mega("mech", [
+    ("Start here", [
+      ("why-its-hard.html","Why it&rsquo;s hard","The gap this exists to close"),
+      ("run-a-challenge.html","Overview","All six steps at a glance"),
+      ("step-1-define-the-problem.html","1 &middot; Define the problem","Write the outcome, seal the criteria"),
+      ("step-2-cap-the-risk.html","2 &middot; Cap the risk","Five axes decide the relaxation"),
+      ("step-3-see-whos-eligible.html","3 &middot; See who&rsquo;s eligible","Screened on risk, not turnover")]),
+    ("Run and close it", [
+      ("step-4-design-the-pilot.html","4 &middot; Design the pilot","Sandbox and milestones"),
+      ("step-5-run-and-validate.html","5 &middot; Run &amp; validate","Independent check against the seal"),
+      ("step-6-buy-it-lawfully.html","6 &middot; Buy it lawfully","Tier 1, 2 or 3 &mdash; or no route"),
+      ("where-it-runs.html","Where it runs","All six revenue divisions")]),
+   ], "Every choice carries forward. Your answers stay in this browser.")
+ + '</div>'
+ + '<div class="mm-wrap"><button class="mmbtn" id="mmb-market" aria-expanded="false" '
+   'aria-controls="mm-market" onclick="mm(\'market\')"><span data-i18n="nav_market">Marketplace</span> <span class="cv">&#9660;</span></button>'
+ + mega("market", [
+    ("Browse", [
+      ("categories.html","Categories","All eight demand categories"),
+      ("products.html","Products","Deployable goods &amp; devices"),
+      ("services.html","Services","Managed and outcome services"),
+      ("skill-purchase.html","Skill purchase 24&times;7","Trainers, assessors, courseware")]),
+    ("Sellers", [
+      ("sellers.html","About a seller","Profile, licences, track record"),
+      ("licence.html","Licence &amp; registration","What each registration unlocks"),
+      ("become-a-seller.html","Become a seller","How a listing is earned")]),
+    ("Buyer access", [
+      ("buyer-login.html","Buyer login","Departmental officers"),
+      ("buyer-registration.html","Buyer registration","New department or ULB"),
+      ("buyer-background.html","Buyer background","Verification &amp; authority limits")]),
+   ], '<span class="always">Open 24&times;7</span> &middot; Prototype data only.')
+ + '</div>'
+ + '<div class="mm-wrap"><button class="mmbtn" id="mmb-ev" aria-expanded="false" '
+   'aria-controls="mm-ev" onclick="mm(\'ev\')"><span data-i18n="nav_ev">Evidence &amp; rules</span> <span class="cv">&#9660;</span></button>'
+ + mega("ev", [
+    ("The legal basis", [
+      ("rule-book.html","Rule book","Each provision, quoted"),
+      ("government-laws.html","Government laws","GFR, DPDP, DAP, GeM"),
+      ("judges-questions.html","Judge&rsquo;s questions","Straight answers")]),
+    ("Artefacts", [
+      ("templates.html","Templates","Versioned, not one-off files"),
+      ("working-reports.html","Working reports","Quarterly programme reporting"),
+      ("resources.html","All resources","Everything in one place")]),
+   ])
+ + '</div>'
+ + '<a href="department-services.html" data-i18n="nav_dept">Department services</a>'
+ + '<a href="about.html" data-i18n="nav_about">About</a>'
+)
+
+def rebuild_nav(html):
+    """Replace the whole <nav class="navlinks"> block with the five-group version."""
+    i = html.index('<nav class="navlinks"')
+    j = html.index('</nav>', i) + len('</nav>')
+    head = html[i:html.index('>', i) + 1]
+    return html[:i] + head + NAV_HTML + '</nav>' + html[j:]
+
+top = rebuild_nav(top)
+
 # A public URL shows government branding before the footer is ever reached,
 # so the prototype notice goes above the fold.
 PROTO_BAR = ('<div class="protobar"><div class="wrap">'
@@ -201,6 +275,39 @@ def divider_html(fname):
             '<h2>%s</h2><p>%s</p><span class="cap">%s</span>'
             '</div></div>') % (cls, head, body, cap)
 
+
+# ===================================================================
+#  DEPARTMENT SERVICES HUB — the nine pages outside SIH26136's scope,
+#  kept working but no longer competing with the mechanism.
+# ===================================================================
+DEPT_GROUPS = [
+ ("Skills &amp; livelihood", "The department&rsquo;s three mandates, and the schemes behind them.", [
+   ("skill.html","Skill","Courses, assessment, certification"),
+   ("employment.html","Employment","Vacancies, melas, placement"),
+   ("entrepreneurship.html","Entrepreneurship","Incubation, credit, mentoring"),
+   ("schemes.html","Skill development schemes","Check what you are eligible for")]),
+ ("Evidence &amp; reporting", "What tells a department where to act.", [
+   ("skill-gap.html","Skill gap report","Demand against certified supply, by district"),
+   ("working-reports.html","Working reports","Quarterly programme reporting"),
+   ("apps.html","Field apps","Offline-first evidence capture")]),
+ ("Learn &amp; get help", "For officers, sellers, evaluators and citizens.", [
+   ("training.html","Training","Six tracks, one per role"),
+   ("training-videos.html","Training videos","Short films, one per step"),
+   ("grievance.html","Grievance 24&times;7","Raise a ticket, with a clock on it")]),
+]
+DEPT_HUB = ('<section id="deptsvc"><div class="wrap">'
+ '<div class="s-head"><p class="eyebrow">Department of Skills, Employment, Entrepreneurship &amp; Innovation</p>'
+ '<h2>Department services</h2>'
+ '<p>GovStart Bridge sits inside a working department. These are the services that surround it &mdash; '
+ 'they are not part of the procurement mechanism, but they are what the mechanism plugs into.</p></div>'
+ + "".join(
+   '<div class="deptgroup"><h3>%s</h3><p class="deptlede">%s</p><div class="grid g3">%s</div></div>'
+   % (title, lede, "".join(
+       '<a class="card hover deptcard" href="%s"><h3>%s</h3><p>%s</p>'
+       '<span class="deptgo">Open &rarr;</span></a>' % (h, l, n) for h, l, n in items))
+   for title, lede, items in DEPT_GROUPS)
+ + '</div></section>')
+
 # --------------------------------------------------------------- template
 def page(fname, title, crumb, nav_key, content, page_step=None, feature=None):
     t = top
@@ -272,22 +379,8 @@ for i,(fname,label) in enumerate(STEPS):
                         "run-a-challenge.html", content, page_step=i)
 
 
-# ===================================================================
-#  Landing page: a welcome and three doors, not an essay.
-# ===================================================================
-hero = re.sub(r'<span class="pill">.*?</span>', '', hero, count=1, flags=re.S)
-hero = re.sub(r'<h1>.*?</h1>',
- '<h1>Welcome to <em>GovStart Bridge</em></h1>', hero, count=1, flags=re.S)
-hero = re.sub(r'<p>Maharashtra departments have problems.*?</p>',
- '<p>Maharashtra\'s innovation procurement mechanism \u2014 connecting government '
- 'departments with startups, lawfully.</p>', hero, count=1, flags=re.S)
-hero = re.sub(r'<div class="hero-cta">.*?</div>', '', hero, count=1, flags=re.S)
-hero = re.sub(r'<p class="hnote">.*?</p>', '', hero, count=1, flags=re.S)
 
-ROLE_CARDS = """
-<section class="doors">
-  <div class="wrap">
-    <p class="doors-lead">Choose where you are coming from</p>
+ROLE_CARDS_INNER = """
     <div class="doorgrid">
       <a class="door" href="buyer-login.html">
         <span class="door-ico" aria-hidden="true">\u25a4</span>
@@ -308,15 +401,119 @@ ROLE_CARDS = """
         <span class="door-go">Grievance desk, open 24\u00d77 \u2192</span>
       </a>
     </div>
-    <p class="doors-alt">Just looking around?
-      <a href="run-a-challenge.html">Walk through the mechanism</a> \u00b7
-      <a href="why-its-hard.html">Why this is hard today</a> \u00b7
-      <a href="about.html">About us</a></p>
-  </div>
-</section>
 """
+ROLE_CARDS = '<section class="doors"><div class="wrap">' + ROLE_CARDS_INNER + '</div></section>'
 
+# ===================================================================
+#  LANDING PAGE - written for a first-time visitor, not a logged-in user.
+#  Seven bands, each doing exactly one job.
+# ===================================================================
+hero = re.sub(r'<span class="pill">.*?</span>', '', hero, count=1, flags=re.S)
+hero = re.sub(r'<h1>.*?</h1>',
+ '<h1>A department cannot buy an innovation.<br>It can buy <em>evidence</em> — then buy the product.</h1>',
+ hero, count=1, flags=re.S)
+hero = re.sub(r'<p>Maharashtra.*?</p>',
+ '<p>Indian procurement law has no instrument for buying innovation. '
+ 'GovStart Bridge is the mechanism that works anyway — without changing a single rule.</p>',
+ hero, count=1, flags=re.S)
+hero = re.sub(r'<div class="hero-cta">.*?</div>',
+ '<div class="hero-cta">'
+ '<a class="btn btn-p" href="#how">See how it works</a>'
+ '<a class="btn btn-o" href="run-a-challenge.html">Try the mechanism</a>'
+ '</div>', hero, count=1, flags=re.S)
+hero = re.sub(r'<p class="hnote">.*?</p>',
+ '<p class="hnote">Sahyadri range, Raigad district</p>', hero, count=1, flags=re.S)
 
+BAND_GAP = ('<section class="photoband pb-ellora" id="gap"><div class="wrap">'
+ '<div class="s-head center" style="text-align:center;margin-left:auto;margin-right:auto">'
+ '<p class="eyebrow">The gap</p><h2 style="display:inline-block;text-align:left">Three rules close every obvious route</h2></div>'
+ '<div class="grid g3">'
+ '<div class="card"><span class="tag r">Rule 166</span><h3>No direct award</h3>'
+ '<p>Allowed on three grounds. &ldquo;Won our challenge&rdquo; is not one of them.</p></div>'
+ '<div class="card"><span class="tag r">Rule 157</span><h3>No quiet rollout</h3>'
+ '<p>A small pilot then a big rollout of the same demand is piecemeal purchase.</p></div>'
+ '<div class="card"><span class="tag g">Rule 173(i)</span><h3>A conditional gift</h3>'
+ '<p>Turnover may be relaxed for startups — but only if the bidding document says so.</p></div>'
+ '</div>'
+ '<p style="text-align:center;margin-top:20px"><a href="why-its-hard.html" style="font-weight:600">'
+ 'Read the full argument &rarr;</a></p>'
+ '</div></section>')
+
+BAND_IDEA = ('<section id="idea"><div class="wrap">'
+ '<div class="s-head center" style="text-align:center;margin-left:auto;margin-right:auto">'
+ '<p class="eyebrow">The idea</p><h2 style="display:inline-block;text-align:left">Two purchases, not one</h2>'
+ '<p>You cannot specify an innovation in advance — so you buy the evidence first, '
+ 'and the product once that evidence exists.</p></div>'
+ '<div class="contracts">'
+ '<div class="contract evi"><h4>Evidence Contract</h4><p class="who">MSInS contracts &middot; the department hosts</p>'
+ '<ul><li>Buys a defined question, a defined test, a report</li>'
+ '<li>Competition on the <b>outcome</b>, never the solution</li>'
+ '<li>Eligibility relaxed in proportion to a measured risk cap</li>'
+ '</ul></div>'
+ '<div class="gate"><span>Validation gate</span></div>'
+ '<div class="contract dep"><h4>Deployment Contract</h4><p class="who">the department buys</p>'
+ '<ul><li>Buys a now-specified product</li>'
+ '<li>Entered only after independent validation</li>'
+ '<li>Routed to Tier 1, 2 or 3 on facts already held</li>'
+ '</ul></div>'
+ '</div></div></section>')
+
+STEP_ICONS = ["◴","◔","◍","▦","◷","✓"]
+BAND_HOW = ('<section class="photoband pb-kaas" id="how"><div class="wrap">'
+ '<div class="s-head center" style="text-align:center;margin-left:auto;margin-right:auto">'
+ '<p class="eyebrow">How it works</p><h2 style="display:inline-block;text-align:left">Six steps, and each one narrows the next</h2></div>'
+ '<div class="stepstrip">'
+ + "".join('<a class="stepchip" href="%s"><span class="sc-n">%d</span>'
+           '<span class="sc-i" aria-hidden="true">%s</span><b>%s</b><span class="sc-d">%s</span></a>'
+           % (f, i + 1, STEP_ICONS[i], l, d) for i, (f, l, d) in enumerate([
+   (STEPS[0][0], "Define the problem", "Seal the criteria first"),
+   (STEPS[1][0], "Cap the risk", "Five axes set the relaxation"),
+   (STEPS[2][0], "See who&rsquo;s eligible", "Screened on risk, not turnover"),
+   (STEPS[3][0], "Design the pilot", "Sandbox and milestones"),
+   (STEPS[4][0], "Run &amp; validate", "An independent check"),
+   (STEPS[5][0], "Buy it lawfully", "Tier 1, 2 or 3 — or no route at all")]))
+ + '</div></div></section>')
+
+BAND_PROOF = ('<section id="proof"><div class="wrap">'
+ '<div class="s-head center" style="text-align:center;margin-left:auto;margin-right:auto">'
+ '<p class="eyebrow">Proof</p><h2 style="display:inline-block;text-align:left">Three things that actually work</h2>'
+ '<p>Not mock-ups. Try them here, or in full inside the walkthrough.</p></div>'
+ '<div class="grid g3">'
+ '<div class="card proofcard"><span class="tag">Mechanism M6</span><h3>The criteria cannot move</h3>'
+ '<p>Success criteria are hashed with SHA-256 and published before any solution is seen. '
+ 'Edit one and the seal breaks in front of you.</p>'
+ '<div class="minidemo"><label for="pf_kpi">Target</label>'
+ '<input id="pf_kpi" value="&le; 60 min" oninput="proofSeal()">'
+ '<div class="minihash" id="pf_hash"></div>'
+ '<div class="ministate" id="pf_state"></div></div>'
+ '<a href="step-1-define-the-problem.html">Open step 1 &rarr;</a></div>'
+ '<div class="card proofcard"><span class="tag">Mechanism M4</span><h3>Risk decides eligibility</h3>'
+ '<p>Turnover is a proxy for delivery risk. Cap the risk in the contract and the proxy is redundant — '
+ 'which is exactly when the rule lets you drop it.</p>'
+ '<div class="minidemo"><label for="pf_risk">Blast radius</label>'
+ '<input type="range" id="pf_risk" min="0" max="20" value="4" oninput="proofRisk()">'
+ '<div class="ministate" id="pf_relax"></div></div>'
+ '<a href="step-2-cap-the-risk.html">Open step 2 &rarr;</a></div>'
+ '<div class="card proofcard"><span class="tag">Mechanism M5</span><h3>Three lawful routes</h3>'
+ '<p>No single route exists from a validated pilot to a purchase order, so the platform holds three '
+ 'and picks on facts it already has.</p>'
+ '<div class="minidemo"><label for="pf_case">If the pilot succeeds…</label>'
+ '<select id="pf_case" onchange="proofTier()">'
+ '<option value="gr">one winner, GR in force</option>'
+ '<option value="nogr" selected>one winner, no GR</option>'
+ '<option value="multi">several winners</option>'
+ '<option value="wide">other departments</option>'
+ '<option value="fail">nobody met the criteria</option></select>'
+ '<div class="ministate" id="pf_tier"></div></div>'
+ '<a href="step-6-buy-it-lawfully.html">Open step 6 &rarr;</a></div>'
+ '</div></div></section>')
+
+BAND_ENTER = ('<section class="photoband pb-deeksha" id="enter"><div class="wrap">'
+ '<p class="doors-lead">Or go straight in</p>' + ROLE_CARDS_INNER + '</div></section>')
+
+# ===================================================================
+#  Landing page: legacy block (role cards reused in band 6)
+# ===================================================================
 # ---------------------------------------------------------- other pages
 overview = ('<section class="flow"><div class="wrap">' + flow_head + stepper(-1) +
  '<div class="stage"><h3>Six steps, six pages</h3><p class="sub">Every choice carries forward. '
@@ -335,7 +532,8 @@ overview = ('<section class="flow"><div class="wrap">' + flow_head + stepper(-1)
  f'<a class="btn btn-d btn-sm" href="{STEPS[0][0]}">Begin →</a></div></div></div></section>')
 
 PLAIN = [
- ("index.html","Home","Welcome",None, hero+ROLE_CARDS),
+ ("index.html","Home","Welcome",None,
+   hero + BAND_GAP + BAND_IDEA + BAND_HOW + BAND_PROOF + BAND_ENTER),
  ("why-its-hard.html","Why it's hard","Why it's hard today",None, strip+section("why")),
  ("run-a-challenge.html","Run a challenge","Run a challenge","run-a-challenge.html", overview),
  ("where-it-runs.html","Where it runs","Where it runs","where-it-runs.html", section("statewide")),
@@ -348,6 +546,7 @@ PLAIN = [
  ("rule-book.html","Rule book","Rule book","rule-book.html", section("rules")),
  ("judges-questions.html","Judge's questions","Judge's questions",None, section("qa")),
  ("help.html","Help","Help centre",None, section("help")),
+ ("department-services.html","Department services","Department services","department-services.html", DEPT_HUB),
  ("about.html","About us","About us","about.html", section("about")),
  ("grievance.html","Grievance 24×7","Grievance redressal","grievance.html", section("grievance")),
  ("contact.html","Contacts","Contacts",None, section("contact")),
@@ -392,10 +591,15 @@ def videos_page():
     h = train_sec
     # keep only the videos half
     i = h.index('<h3 id="videos"')
+    rest = h[i:]
+    # the source block repeats the heading; the page already has one
+    rest = re.sub(r'<h3 id="videos"[^>]*>.*?</h3>\s*<p[^>]*>.*?</p>', '<span id="videos"></span>',
+                  rest, count=1, flags=re.S)
     return ('<section id="training"><div class="wrap"><div class="s-head">'
             '<p class="eyebrow">Training</p><h2>Training videos</h2>'
-            '<p>Short films, Marathi and English, each tied to one step of the mechanism.</p></div>'
-            + h[i:])
+            '<p>Short films, Marathi and English, each tied to one step of the mechanism. '
+            'Scripts are written; the films are not yet produced.</p></div>'
+            + rest)
 
 SUBPAGES = [
  # marketplace family

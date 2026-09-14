@@ -942,13 +942,13 @@ function renderTraining(){
   if($("trainGrid"))$("trainGrid").innerHTML=TRAIN.map(t=>`<div class="lcard">
     <div class="lh"><h4>${esc(t[0])}</h4><span class="tag n">${esc(t[3])}</span></div>
     <p>${esc(t[2])}</p><div class="meta"><span>${esc(t[1])}</span><span>Certificate on completion</span></div></div>`).join("");
-  if($("vidGrid"))$("vidGrid").innerHTML=VIDEOS.map((v,i)=>`<button class="vid" onclick="playVideo(${i})">
-    <div class="vthumb"><span class="pl" aria-hidden="true">▶</span><span class="dur">${esc(v[1])}</span></div>
+  if($("vidGrid"))$("vidGrid").innerHTML=VIDEOS.map((v,i)=>`<button class="vid soon" onclick="playVideo(${i})">
+    <div class="vthumb"><span class="pl" aria-hidden="true">Script ready</span><span class="dur">${esc(v[1])}</span></div>
     <div class="vb"><h4>${esc(v[0])}</h4><p>${esc(v[2])}</p></div></button>`).join("");
 }
 function playVideo(i){
   const v=VIDEOS[i];
-  openModal(v[0],`<div class="vthumb" style="border-radius:12px;margin-bottom:14px"><span class="pl" aria-hidden="true">▶</span><span class="dur">${esc(v[1])}</span></div>
+  openModal(v[0],`<div class="vthumb" style="border-radius:12px;margin-bottom:14px"><span class="pl" aria-hidden="true">Script ready</span><span class="dur">${esc(v[1])}</span></div>
     <p style="font-size:13.5px"><b>${esc(v[2])}</b></p>
     <p style="font-size:13px;color:var(--muted);margin-top:8px">Video playback is a placeholder in this prototype — the page loads no external media, so it works with no network at all. A live deployment would stream from the state's own media service with captions in Marathi, Hindi and English, and a downloadable transcript.</p>
     <div class="note-b" style="margin-top:12px">Each film is tied to exactly one step of the mechanism, so it can be opened from inside that step when an officer is stuck rather than hunted for afterwards.</div>`);
@@ -1259,6 +1259,9 @@ const I18N={
        "कौशल्य, रोजगार, उद्योजकता व नावीन्यता विभाग · महाराष्ट्र राज्य नावीन्यता सोसायटी"],
  tagline:["Innovation procurement · SIH26136","नावीन्यता खरेदी प्रक्रिया · SIH26136"],
  nav_run:["Run a challenge","आव्हान चालवा"],
+ nav_mech:["The mechanism","यंत्रणा"],
+ nav_ev:["Evidence &amp; rules","पुरावे व नियम"],
+ nav_dept:["Department services","विभागीय सेवा"],
  nav_market:["Marketplace","बाजारपेठ"],
  nav_skill:["Skills &amp; Livelihood","कौशल्य व उपजीविका"],
  nav_rules:["Rule book","नियमपुस्तिका"],
@@ -1365,6 +1368,44 @@ function renderDivisions(){
   </article>`).join("");
 }
 
+/* ===== landing page: three live proof teasers =====
+   These reuse sha256(), relax() and the tier logic rather than duplicating them. */
+function proofSeal(){
+  const el=$("pf_kpi"); if(!el) return;
+  const SEALED="≤ 60 min";
+  const live=sha256(JSON.stringify({target:el.value}));
+  const ref =sha256(JSON.stringify({target:SEALED}));
+  $("pf_hash").textContent=live;
+  const ok=live===ref, st=$("pf_state");
+  st.className="ministate "+(ok?"ok":"bad");
+  st.textContent=ok?"✓ Matches the published seal":"⚠ Seal broken — the bar moved, and anyone can prove it";
+}
+function proofRisk(){
+  const el=$("pf_risk"); if(!el) return;
+  const v=parseInt(el.value,10);
+  const r=v<=5?["Full relaxation lawful","ok"]
+        :v<=11?["Partial relaxation","warn"]
+              :["No relaxation — shrink the pilot instead","bad"];
+  const st=$("pf_relax");
+  st.className="ministate "+r[1];
+  st.textContent=v+"/20 · "+r[0];
+}
+function proofTier(){
+  const el=$("pf_case"); if(!el) return;
+  const m={gr:["Tier 1 — Proprietary Article Certificate","ok"],
+           nogr:["Tier 3 — Tier 1 needs a state GR, so it falls back","warn"],
+           multi:["Tier 2 — limited tender to the winners","ok"],
+           wide:["Tier 3 — GeM catalogue replication","ok"],
+           fail:["No route — and that is the system working","bad"]}[el.value];
+  const st=$("pf_tier");
+  st.className="ministate "+m[1];
+  st.textContent=m[0];
+}
+function initProof(){
+  if(!$("pf_kpi")) return;
+  proofSeal(); proofRisk(); proofTier();
+}
+
 /* ===== sub-feature pages: one feature, one URL ===== */
 function initSubPage(){
   const cfg=window.PAGE_FEATURE;
@@ -1417,6 +1458,7 @@ function init(){
     const strip=document.querySelector(".strip"); if(strip)io.observe(strip); else countUp();
   } else countUp();
   initSubPage();
+  initProof();
   applyHash();
   paintStepPage();
   if(restored)toast("Picked up where you left off. Press Reset to start the example again.");
