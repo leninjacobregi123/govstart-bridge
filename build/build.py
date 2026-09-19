@@ -8,7 +8,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 STAGES = [("extract.py", "extract CSS / JS / images into assets/"),
           ("guard.py",   "make app.js safe on a partial DOM"),
           ("nav.py",     "rewrite navigation for multiple pages"),
-          ("pages.py",   "stamp out the 21 pages")]
+          ("flatten.py", "flatten gradients to solid colour"),
+          ("pages.py",   "stamp out the pages"),
+          ("search.py",  "build the offline search index")]
 for script, what in STAGES:
     print(f"\n\033[1m== {script} — {what}\033[0m")
     r = subprocess.run([sys.executable, os.path.join(HERE, script)])

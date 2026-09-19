@@ -82,6 +82,48 @@ css = css.replace(".steps button{", ".steps a{").replace(".steps button:hover{",
 css = css.replace('.steps button[aria-current="true"]{', '.steps a[aria-current="page"]{')
 css = css.replace(".steps button.done .sn:after{", ".steps a.done .sn:after{")
 css += """
+/* ===== site search ===== */
+.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.hdrsearch{position:relative}
+.hdrsearch input{width:190px;padding:7px 11px;border:1px solid rgba(255,255,255,.34);
+  border-radius:8px;background:rgba(255,255,255,.12);color:#fff;font-size:13px}
+.hdrsearch input::placeholder{color:rgba(255,255,255,.72)}
+.hdrsearch input:focus{background:#fff;color:var(--ink);border-color:var(--saffron);outline:2px solid rgba(255,153,51,.45)}
+.hdrsearch input:focus::placeholder{color:var(--muted)}
+@media(max-width:1180px){.hdrsearch input{width:130px}}
+@media(max-width:820px){.hdrsearch{display:none}}
+
+.sr-box{position:absolute;top:calc(100% + 6px);right:0;width:min(420px,84vw);background:#fff;
+  border:1px solid var(--line);border-radius:10px;z-index:90;overflow:hidden;
+  box-shadow:0 12px 30px rgba(80,40,15,.16)}
+.sr-item{display:block;padding:10px 13px;border-bottom:1px solid var(--line-2);text-decoration:none}
+.sr-item:last-child{border-bottom:0}
+.sr-item:hover,.sr-item:focus{background:var(--blue-s);text-decoration:none}
+.sr-item b{display:block;font:600 13.5px var(--sans);color:var(--ink)}
+.sr-crumb{display:block;font-size:11px;color:var(--blue);margin-top:1px}
+.sr-desc{display:block;font-size:12px;color:var(--muted);margin-top:3px;line-height:1.45;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sr-none{padding:14px;font-size:13px;color:var(--muted);margin:0}
+
+/* ===== landing: "what do you want to do?" ===== */
+.tasks{background:#fff;border-bottom:1px solid var(--line);padding:44px 0 48px}
+.tasks-h{text-align:center;font-size:30px;margin-bottom:18px}
+.bigsearch{position:relative;max-width:640px;margin:0 auto 26px}
+.bigsearch input{width:100%;padding:14px 16px;font-size:15px;border:2px solid var(--line);border-radius:10px}
+.bigsearch input:focus{border-color:var(--blue);outline:3px solid var(--blue-s)}
+.sr-big{left:0;right:auto;width:100%}
+.taskgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:940px;margin:0 auto}
+.taskchip{display:flex;flex-direction:column;gap:5px;padding:16px 15px;background:#fff;
+  border:1px solid var(--line);border-left:3px solid var(--saffron);border-radius:10px;
+  text-decoration:none;transition:.15s}
+.taskchip:hover{border-color:var(--blue);border-left-color:var(--blue);text-decoration:none}
+.tk-i{font-size:17px;color:var(--blue);line-height:1}
+.taskchip b{font:600 15px var(--serif);color:var(--ink)}
+.taskchip span:not(.tk-i){font-size:12px;color:var(--muted);line-height:1.45}
+@media(max-width:900px){.taskgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.taskgrid{grid-template-columns:1fr}.tasks-h{font-size:23px}}
+
 /* six divisions, six photographs */
 .photostrip{grid-template-columns:repeat(6,1fr)}
 @media(max-width:1100px){.photostrip{grid-template-columns:repeat(3,1fr)}}

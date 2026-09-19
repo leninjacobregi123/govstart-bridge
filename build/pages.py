@@ -79,6 +79,14 @@ def rebuild_nav(html):
 
 top = rebuild_nav(top)
 
+# DMV puts search in the header on every page; we had none across 41 pages
+HDR_SEARCH = ('<div class="hdrsearch">'
+ '<label class="visually-hidden" for="hdrSearch">Search this site</label>'
+ '<input id="hdrSearch" type="search" placeholder="Search\u2026" autocomplete="off">'
+ '<div class="sr-box" id="hdrResults" hidden role="listbox" aria-label="Search results"></div>'
+ '</div>')
+top = top.replace('<div class="nav-right">', '<div class="nav-right">' + HDR_SEARCH, 1)
+
 # A public URL shows government branding before the footer is ever reached,
 # so the prototype notice goes above the fold.
 PROTO_BAR = ('<div class="protobar"><div class="wrap">'
@@ -424,6 +432,29 @@ hero = re.sub(r'<div class="hero-cta">.*?</div>',
 hero = re.sub(r'<p class="hnote">.*?</p>',
  '<p class="hnote">Sahyadri range, Raigad district</p>', hero, count=1, flags=re.S)
 
+TASKROW = ('<section id="dothis" class="tasks"><div class="wrap">'
+ '<h2 class="tasks-h">What do you want to do?</h2>'
+ '<div class="bigsearch">'
+ '<label class="visually-hidden" for="bigSearch">Search the site</label>'
+ '<input id="bigSearch" type="search" autocomplete="off" '
+ 'placeholder="Search a rule, a district, a service \u2014 try 173, Nashik, or payment">'
+ '<div class="sr-box sr-big" id="bigResults" hidden role="listbox" aria-label="Search results"></div>'
+ '</div>'
+ '<div class="taskgrid">'
+ '<a class="taskchip" href="step-1-define-the-problem.html">'
+ '<span class="tk-i" aria-hidden="true">\u270e</span><b>Post a problem</b>'
+ '<span>Write the outcome and seal the criteria</span></a>'
+ '<a class="taskchip" href="marketplace.html">'
+ '<span class="tk-i" aria-hidden="true">\u25c8</span><b>Find a solution</b>'
+ '<span>Products, services and skills departments buy</span></a>'
+ '<a class="taskchip" href="rule-book.html">'
+ '<span class="tk-i" aria-hidden="true">\u00a7</span><b>Check a rule</b>'
+ '<span>Every provision, quoted, with what it does</span></a>'
+ '<a class="taskchip" href="grievance.html">'
+ '<span class="tk-i" aria-hidden="true">\u25ce</span><b>Raise a grievance</b>'
+ '<span>Open 24\u00d77, with a clock on it</span></a>'
+ '</div></div></section>')
+
 BAND_GAP = ('<section class="photoband pb-ellora" id="gap"><div class="wrap">'
  '<div class="s-head center" style="text-align:center;margin-left:auto;margin-right:auto">'
  '<p class="eyebrow">The gap</p><h2 style="display:inline-block;text-align:left">Three rules close every obvious route</h2></div>'
@@ -533,7 +564,7 @@ overview = ('<section class="flow"><div class="wrap">' + flow_head + stepper(-1)
 
 PLAIN = [
  ("index.html","Home","Welcome",None,
-   hero + BAND_GAP + BAND_IDEA + BAND_HOW + BAND_PROOF + BAND_ENTER),
+   hero + TASKROW + BAND_GAP + BAND_IDEA + BAND_HOW + BAND_PROOF + BAND_ENTER),
  ("why-its-hard.html","Why it's hard","Why it's hard today",None, strip+section("why")),
  ("run-a-challenge.html","Run a challenge","Run a challenge","run-a-challenge.html", overview),
  ("where-it-runs.html","Where it runs","Where it runs","where-it-runs.html", section("statewide")),

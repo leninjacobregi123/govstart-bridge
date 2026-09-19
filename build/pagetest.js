@@ -64,6 +64,20 @@ for(const p of pages){
      && !!d.getElementById("aiP") && !!d.getElementById("modal"));
   const cur=d.querySelectorAll('#navlinks [aria-current="page"]');
   ck(`${p}: <=1 nav item marked current`, cur.length<=1, cur.length+" marked");
+  // search must be present and correct on every page
+  ck(`${p}: header search present`, !!d.getElementById("hdrSearch") && !!d.getElementById("hdrResults"));
+  if(typeof dom.window.searchSite === "function"){
+    const q=(t)=>dom.window.searchSite(t).map(x=>x.u);
+    if(p==="index.html"){
+      ck("search: '173' finds the risk ladder or rule book",
+         ["step-2-cap-the-risk.html","rule-book.html"].includes(q("173")[0]), q("173")[0]);
+      ck("search: 'tier 3' finds step 6", q("tier 3")[0]==="step-6-buy-it-lawfully.html", q("tier 3")[0]);
+      ck("search: 'nashik' finds where it runs", q("nashik")[0]==="where-it-runs.html", q("nashik")[0]);
+      ck("search: 'seal' finds step 1", q("seal")[0]==="step-1-define-the-problem.html", q("seal")[0]);
+      ck("search: nonsense returns nothing", q("zzqqxx").length===0);
+    }
+  } else if(p==="index.html"){ ck("search: searchSite is defined", false, "missing"); }
+
   for(const sel of (EXPECT[p]||[])){
     ck(`${p}: renders ${sel}`, d.querySelectorAll(sel).length>0);
   }

@@ -65,6 +65,17 @@ js = js.replace('function renderTraining(){\n  $("trainGrid").innerHTML',
                 'function renderTraining(){\n  if($("trainGrid"))$("trainGrid").innerHTML')
 js = js.replace('\n  $("vidGrid").innerHTML', '\n  if($("vidGrid"))$("vidGrid").innerHTML')
 
+# a top-level listener on an element that may be absent aborts the whole script,
+# leaving every later const in the temporal dead zone
+js = js.replace('$("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal();});',
+ 'if($("modal"))$("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal();});')
+js = js.replace('function closeModal(){$("modal").classList.remove("open");',
+ 'function closeModal(){if(!$("modal"))return;$("modal").classList.remove("open");')
+js = js.replace('$("mTitle").textContent=t;$("mBody").innerHTML=h;$("modal").classList.add("open");',
+ 'if(!$("modal"))return;$("mTitle").textContent=t;$("mBody").innerHTML=h;$("modal").classList.add("open");')
+js = js.replace('function toggleNav(){const o=$("navlinks").classList.toggle("open");',
+ 'function toggleNav(){if(!$("navlinks"))return;const o=$("navlinks").classList.toggle("open");')
+
 open(APP, "w", encoding="utf-8").write(js)
 print(f"guards inserted into {len(added)} renderers:")
 for a in added: print("   ", a)
