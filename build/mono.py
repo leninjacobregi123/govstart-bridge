@@ -165,8 +165,9 @@ css += """
 .protobar .tagp{background:#fff;color:#111}
 /* the eyebrow takes its value from the band it sits on, not from an inline style */
 .eyebrow{color:#4a4a4a}
-.flow .eyebrow,.photoband.dark .eyebrow,.hero .eyebrow{color:#d4d4d4}
-/* the stepper sits on a light band on the hub page and on a dark one inside the flow */
+.flow .eyebrow,.hero .eyebrow{color:#d4d4d4}
+/* the stepper is light-on-dark inside the flow; the plain rules are the default
+   for a stepper placed anywhere else */
 .steps a{background:#f2f2f2;border-bottom:3px solid #ddd;color:#444}
 .steps a:hover{background:#e8e8e8;color:#111}
 .steps a[aria-current="page"]{background:#fff;color:#111;border-bottom-color:#111}
@@ -181,21 +182,7 @@ body.hc .steps a{background:#000!important;color:#ff0!important;border-bottom-co
 body.hc .steps a[aria-current="page"]{background:#000!important;color:#fff!important;border-bottom-color:#fff!important}
 """
 
-# ---- 6. the mark is interface, so it goes mono too --------------------
 import os
-LOGO = "/home/lenin/Apps Developed/SIH 26136/docs/assets/img/logo.svg"
-if os.path.exists(LOGO):
-    svg = open(LOGO, encoding="utf-8").read()
-    svg = re.sub(r"<defs>.*?</defs>", "", svg, flags=re.S)          # drop the gradient
-    svg = svg.replace("fill='url(#b)'", "fill='#111'")              # solid black tile
-    # everything chromatic goes ink first...
-    svg = re.sub(r"fill='#(?!fff\b|ffffff\b|111\b)[0-9a-fA-F]{3,6}'", "fill='#111'", svg)
-    # ...then the keystone is set last, so nothing overwrites it. Mid-grey is the
-    # only value that reads against both the white bridge and the black tile.
-    svg = re.sub(r"(<rect x='234'[^>]*fill=')#[0-9a-fA-F]{3,6}(')", r"\g<1>#9a9a9a\g<2>", svg)
-    open(LOGO, "w", encoding="utf-8").write(svg)
-    print("logo.svg: tile #111, bridge white, keystone mid-grey")
-
 open(CSS, "w", encoding="utf-8").write(css)
 
 # ---- 7. inline styles in the markup and in app.js ---------------------

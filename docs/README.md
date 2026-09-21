@@ -36,8 +36,11 @@ The interface is black, white and grey. Colour appears in exactly two places,
 because in both it is evidence rather than decoration:
 
 - **the official insignia** — the tricolour rule, and the seal of the Government
-  of Maharashtra;
-- **the photographs** — real places, in their own colours.
+  of Maharashtra. There is no invented mark: a department's site carries the
+  insignia it is entitled to carry and nothing a designer drew beside them;
+- **the photographs** — real places, in their own colours. They appear full-bleed,
+  in bands of their own, and never behind body text: a photograph under a
+  paragraph is a photograph you cannot see and a paragraph you cannot read.
 
 Everything a designer would otherwise reach for a hue to do is done with weight,
 rule and spacing instead. Where colour used to carry meaning — pass, warning,

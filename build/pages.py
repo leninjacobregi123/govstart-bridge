@@ -201,61 +201,6 @@ def relink(html):
 
 top, bottom, hero, strip = map(relink, (top, bottom, hero, strip))
 
-# ===================================================================
-#  Photographic bands: which Maharashtra photo sits behind which page
-# ===================================================================
-BANDS = {
- "why-its-hard.html":      "pb-kokan",
- "run-a-challenge.html":   "pb-kaas",
- "where-it-runs.html":     "pb-deeksha",
- "marketplace.html":       "pb-sula",
- "categories.html":        "pb-sula",
- "products.html":          "pb-sula",
- "services.html":          "pb-sula",
- "skill-purchase.html":    "pb-kaas",
- "skills.html":            "pb-kaas",
- "skill.html":             "pb-kaas",
- "employment.html":        "pb-kaas",
- "entrepreneurship.html":  "pb-kaas",
- "schemes.html":           "pb-deeksha",
- "skill-gap.html":         "pb-kokan",
- "training.html":          "pb-ellora",
- "training-videos.html":   "pb-ellora",
- "resources.html":         "pb-ellora",
- "templates.html":         "pb-ellora",
- "government-laws.html":   "pb-ellora",
- "working-reports.html":   "pb-ellora",
- "apps.html":              "pb-ellora",
- "rule-book.html":         "pb-ellora",
- "judges-questions.html":  "pb-kokan",
- "help.html":              "pb-kaas",
- "about.html":             "pb-deeksha",
- "grievance.html":         "pb-kokan",
- "contact.html":           "pb-deeksha",
- "sellers.html":           "pb-sula",
- "licence.html":           "pb-sula",
- "become-a-seller.html":   "pb-sula",
- "buyer-login.html":       "pb-deeksha",
- "buyer-registration.html":"pb-deeksha",
- "buyer-background.html":  "pb-deeksha",
-}
-def add_band(fname, html):
-    """Put the page's photograph behind its first <section>.
-
-    Classes the section already carries are merged into the one class
-    attribute: emitting a second one would look right in the source and
-    then be silently dropped by every parser.  `flow` is the exception -
-    it paints a flat dark panel with light text, which is the opposite
-    presentation to a photograph under a light tint, so the band wins."""
-    cls = BANDS.get(fname)
-    if not cls: return html
-    def band(m):
-        attrs = m.group(1) or ""
-        had = re.search(r'\sclass="([^"]*)"', attrs)
-        keep = [c for c in (had.group(1).split() if had else []) if c != "flow"]
-        attrs = re.sub(r'\sclass="[^"]*"', "", attrs)
-        return '<section%s class="%s"' % (attrs, " ".join(["photoband", cls] + keep))
-    return re.sub(r'<section((?:\s+[a-zA-Z-]+="[^"]*")*)', band, html, count=1)
 
 
 # Full-bleed photographic dividers - placed between sections, never behind body text.
@@ -337,8 +282,8 @@ def page(fname, title, crumb, nav_key, content, page_step=None, feature=None):
     if feature:
         import json as _j
         step_js += '\n<script>window.PAGE_FEATURE=%s;</script>' % _j.dumps(feature)
-    content = add_band(fname, content) + divider_html(fname)
-    if fname in DIVIDERS or fname in BANDS:      # CC BY-SA requires attribution
+    content = content + divider_html(fname)
+    if fname in DIVIDERS:                        # CC BY-SA requires attribution
         bottom_local = bottom.replace('<div class="disc">',
             '<p style="font-size:11px;line-height:1.8;color:#c2917a;margin-bottom:14px">'
             'Background photographs from Wikimedia Commons, reused under their Creative Commons licences: '
@@ -465,7 +410,7 @@ TASKROW = ('<section id="dothis" class="tasks"><div class="wrap">'
  '<span>Open 24\u00d77, with a clock on it</span></a>'
  '</div></div></section>')
 
-BAND_GAP = ('<section class="photoband pb-ellora" id="gap"><div class="wrap">'
+BAND_GAP = ('<section id="gap"><div class="wrap">'
  '<div class="s-head center" style="text-align:center;margin-left:auto;margin-right:auto">'
  '<p class="eyebrow">The gap</p><h2 style="display:inline-block;text-align:left">Three rules close every obvious route</h2></div>'
  '<div class="grid g3">'
@@ -500,7 +445,7 @@ BAND_IDEA = ('<section id="idea"><div class="wrap">'
  '</div></div></section>')
 
 STEP_ICONS = ["◴","◔","◍","▦","◷","✓"]
-BAND_HOW = ('<section class="photoband pb-kaas" id="how"><div class="wrap">'
+BAND_HOW = ('<section id="how"><div class="wrap">'
  '<div class="s-head center" style="text-align:center;margin-left:auto;margin-right:auto">'
  '<p class="eyebrow">How it works</p><h2 style="display:inline-block;text-align:left">Six steps, and each one narrows the next</h2></div>'
  '<div class="stepstrip">'
@@ -549,7 +494,7 @@ BAND_PROOF = ('<section id="proof"><div class="wrap">'
  '<a href="step-6-buy-it-lawfully.html">Open step 6 &rarr;</a></div>'
  '</div></div></section>')
 
-BAND_ENTER = ('<section class="photoband pb-deeksha" id="enter"><div class="wrap">'
+BAND_ENTER = ('<section id="enter"><div class="wrap">'
  '<p class="doors-lead">Or go straight in</p>' + ROLE_CARDS_INNER + '</div></section>')
 
 # ===================================================================

@@ -17,7 +17,6 @@ CSS_NAMES = {
     "emb-nat":   "emblem-india.png",          # dark line art, for light backgrounds
     "emb-nat-w": "emblem-india-white.png",    # inverted, for dark backgrounds
     "emb-moh":   "maha-seal.png",
-    "emblem":    "logo.svg",
     "warli-medallion": "warli.webp",
     "hero":      "hero.webp",
 }
@@ -47,8 +46,6 @@ def css_repl(m):
     return m.group(0).replace(uri, save_uri(uri, fn))
 
 css = re.sub(r"\.(emb-nat-w|emb-nat|emb-moh)\{background-image:url\((data:[^)]+)\)\}", css_repl, css)
-css = re.sub(r"(\.emblem)\{[^}]*?url\(\"(data:[^\"]+)\"\)", 
-             lambda m: m.group(0).replace(m.group(2), save_uri(m.group(2), "logo.svg")), css)
 css = re.sub(r"(\.warli-medallion)\{[^}]*?url\(\"(data:[^\"]+)\"\)",
              lambda m: m.group(0).replace(m.group(2), save_uri(m.group(2), "warli.webp")), css)
 css = re.sub(r"(\.hero)\{background-image:linear-gradient\([^;]*?url\('(data:[^']+)'\)",
@@ -207,35 +204,18 @@ section.pb-amravati,.pb-amravati{background-image:url(img/bg-amravati.webp)}
 body.hc .protobar{background:#000!important;color:#ff0!important;border-bottom-color:#ff0}
 @media(max-width:700px){.protobar .wrap{font-size:11.5px;padding:7px 16px}}
 
-/* photographic bands raise the floor slightly, so muted text is darkened to match */
-.photoband{--muted:#5c626b}
-
 /* ===================================================================
-   PHOTOGRAPHIC SECTION BANDS
-   Maharashtra photographs behind the page, with a tint heavy enough
-   that body text keeps its contrast. Content cards stay opaque.
+   PHOTOGRAPHS
+   The photographs appear full-bleed, in their own bands, and never
+   behind body text: a picture under a paragraph is a picture you
+   cannot see and a paragraph you cannot read.  These rules only name
+   the images; .bandrule below places them.
    =================================================================== */
-section.photoband,.photoband{position:relative;background-size:cover;background-position:center;
-  background-attachment:fixed;background-repeat:no-repeat}
-.photoband:before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(150deg,rgba(253,248,240,.965),rgba(255,244,230,.95) 55%,rgba(253,248,240,.965))}
-.photoband>.wrap{position:relative;z-index:1}
 section.pb-kokan,.pb-kokan{background-image:url(img/bg-kokan.webp)}
 section.pb-ellora,.pb-ellora{background-image:url(img/bg-ellora.webp)}
 section.pb-kaas,.pb-kaas{background-image:url(img/bg-kaas.webp)}
 section.pb-deeksha,.pb-deeksha{background-image:url(img/bg-deekshabhoomi.webp)}
 section.pb-sula,.pb-sula{background-image:url(img/bg-sula.webp)}
-
-/* dark bands: the photograph carries, the tint is the bhagwa ramp */
-.photoband.dark:before{background:linear-gradient(150deg,rgba(102,25,10,.90),rgba(133,40,15,.84) 48%,rgba(158,66,22,.80))}
-.photoband.dark,.photoband.dark h2,.photoband.dark h3{color:#fff}
-.photoband.dark p,.photoband.dark li{color:#f6e6da}
-.photoband.dark .s-head p{color:#f4e2d4}
-
-/* cards sit on the photograph, so keep them solid and lift them */
-.photoband .card,.photoband .lcard,.photoband .acc,.photoband .divcard,
-.photoband .cbox,.photoband .ticket,.photoband .rev,.photoband .appcard,.photoband .vid{
-  background:#fff;box-shadow:0 2px 4px rgba(70,40,20,.05),0 10px 30px rgba(70,40,20,.09)}
 
 /* a thin photographic rule between sections instead of empty cream */
 /* Full-bleed photographic divider. No body text sits here, so the
@@ -258,11 +238,8 @@ section.pb-sula,.pb-sula{background-image:url(img/bg-sula.webp)}
 @media(prefers-reduced-motion:reduce){.bandrule{background-attachment:scroll}}
 body.hc .bandrule{background-image:none!important;border-block:2px solid #ff0}
 body.hc .bandrule:before{background:#000!important}
+body.hc .bandrule{background-image:none!important}
 
-@media(max-width:900px){.photoband{background-attachment:scroll}}
-@media(prefers-reduced-motion:reduce){.photoband{background-attachment:scroll}}
-body.hc .photoband:before,body.hc .photoband.dark:before{background:#000!important}
-body.hc .photoband,body.hc .bandrule{background-image:none!important}
 
 
 /* ===== landing page: welcome + three doors ===== */
@@ -296,6 +273,19 @@ body:has(.doors) .hero p{font-size:18px;max-width:560px}
 css = css.replace(
  "radial-gradient(ellipse 70% 62% at 50% 46%,rgba(70,16,6,.52),rgba(70,16,6,.10) 70%,transparent 100%)",
  "radial-gradient(ellipse 76% 68% at 50% 48%,rgba(64,13,4,.66),rgba(64,13,4,.20) 72%,transparent 100%)", 1)
+
+# ---- the invented mark comes out ---------------------------------------
+# The bridge mark was drawn for this prototype.  A department's site
+# carries the insignia it is entitled to carry - the State Emblem and the
+# seal of the Government of Maharashtra - and nothing a designer invented
+# beside them.  The wordmark stays; the picture goes.
+body = re.sub(
+    r'[ \t]*<span class="emblem"[^>]*>[^<]*</span>\n?', "", body)
+css = re.sub(r"\.emblem\{[^}]*\}\n?", "", css)
+_logo = os.path.join(OUT, "assets", "img", "logo.svg")
+if os.path.exists(_logo):
+    os.remove(_logo)
+    print("removed the generated mark")
 
 open(os.path.join(OUT, "assets", "style.css"), "w", encoding="utf-8").write(css)
 open(os.path.join(OUT, "assets", "app.js"),  "w", encoding="utf-8").write(js)
