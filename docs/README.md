@@ -38,9 +38,18 @@ because in both it is evidence rather than decoration:
 - **the official insignia** — the tricolour rule, and the seal of the Government
   of Maharashtra. There is no invented mark: a department's site carries the
   insignia it is entitled to carry and nothing a designer drew beside them;
-- **the photographs** — real places, in their own colours. They appear full-bleed,
-  in bands of their own, and never behind body text: a photograph under a
-  paragraph is a photograph you cannot see and a paragraph you cannot read.
+- **the photographs** — real places, in their own colours. Each page carries one,
+  fixed behind the whole document under a black scrim.
+
+The scrim is 0.70, and that is arithmetic rather than taste. White text needs a
+background of relative luminance at or below 0.1833 to clear 4.5:1; compositing
+a pixel over black at alpha *a* scales each channel by (1 − *a*), so the
+brightest pixel a photograph can contain lands there at *a* = 0.534. Above that,
+the figure holds for any photograph whatever is in it. Bands that carry 11px
+type — the utility bar, masthead, breadcrumb — take a further 0.42 of their own,
+because a bright sky is exactly where the small type falls.
+
+Nothing is white. Cards and panels are dark glass the photograph shows through.
 
 Everything a designer would otherwise reach for a hue to do is done with weight,
 rule and spacing instead. Where colour used to carry meaning — pass, warning,
@@ -55,7 +64,7 @@ order matters: `extract.py` rewrites `assets/app.js` from source, so every later
 stage has to follow it, and `mono.py` has to follow `pages.py` because it greys
 the inline styles in the stamped-out markup as well as the stylesheet.
 
-    extract → guard → nav → flatten → pages → mono → search
+    extract → guard → nav → flatten → pages → mono → onphoto → search
 
 Edit the build scripts, not these pages: re-running the build overwrites `docs/`.
 

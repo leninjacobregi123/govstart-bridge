@@ -11,6 +11,7 @@ STAGES = [("extract.py", "extract CSS / JS / images into assets/"),
           ("flatten.py", "flatten gradients to solid colour"),
           ("pages.py",   "stamp out the pages"),
           ("mono.py",    "monochrome the interface"),
+          ("onphoto.py", "put the page on the photograph"),
           ("search.py",  "build the offline search index")]
 for script, what in STAGES:
     print(f"\n\033[1m== {script} — {what}\033[0m")

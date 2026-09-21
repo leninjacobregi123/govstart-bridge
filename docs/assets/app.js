@@ -162,7 +162,7 @@ function paintSeal(){
     ? '<span class="tag r">⚠ Seal broken — criteria changed after publication</span>'
     : '<span class="tag g">✓ Sealed '+esc(S.sealed.ts)+'</span>';
   $("sealHx").innerHTML=broken
-    ? '<span style="color:var(--green)">published&nbsp;&nbsp;'+S.sealed.hash+'</span><br><span style="color:var(--red)">now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+live+'</span>'
+    ? '<span style="color:var(--green-t)">published&nbsp;&nbsp;'+S.sealed.hash+'</span><br><span style="color:var(--red-t)">now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+live+'</span>'
     : S.sealed.hash;
   $("sealNote").innerHTML=broken
     ? 'Anyone holding the published notice can recompute this and prove the bar moved. The mechanism does not stop an officer editing a field — it makes an <b>undetected</b> edit impossible.'
@@ -200,7 +200,7 @@ function paintRisk(){
   const s=score(),r=relax();
   $("rScore").innerHTML=s+'<small>/20</small>';
   $("rNeedle").style.left=(s/20*100)+"%";
-  const col=r.c==="g"?"var(--green)":r.c==="a"?"var(--amber)":"var(--red)";
+  const col=r.c==="g"?"var(--green-t)":r.c==="a"?"var(--amber-t)":"var(--red-t)";
   const bg=r.c==="g"?"var(--green-s)":r.c==="a"?"var(--amber-s)":"var(--red-s)";
   $("rVerdict").style.cssText="background:"+bg+";border-color:"+col;
   $("rVerdict").innerHTML=`<b style="color:${col}">Rule 173(i) relaxation: ${r.t}</b>${r.why}
@@ -247,7 +247,7 @@ function paintPicks(){
         ${sel?'<span class="tag">✓ Selected</span>':""}
       </div>
       <div class="fit"><span class="cite">Fit</span><span class="bar"><i style="width:${f.fit}%"></i></span><span class="scr">${f.fit}%</span></div>
-      <div class="why"><b style="color:${e.ok?(e.std?"var(--amber)":"var(--green)"):"var(--red)"}">${e.ok?(e.std?"Eligible — standard conditions":"Eligible — relaxation applied"):"Blocked by your risk cap"}</b><br>${esc(e.why)}
+      <div class="why"><b style="color:${e.ok?(e.std?"var(--amber-t)":"var(--green-t)"):"var(--red-t)"}">${e.ok?(e.std?"Eligible — standard conditions":"Eligible — relaxation applied"):"Blocked by your risk cap"}</b><br>${esc(e.why)}
       <br><span class="cite">Evidence: ${esc(f.ev)}</span></div>
     </button>`;}).join("");
 }
@@ -258,8 +258,8 @@ function paintPilot(){
   if(!$("sbOut"))return;
   $("f_data").value=S.dataClass;$("f_acc").value=S.access;
   const escl=S.dataClass>=3||S.access>=3;
-  $("sbOut").innerHTML=`<div style="padding:12px 14px;border-radius:10px;border:1px solid ${escl?"var(--red)":"var(--green)"};background:${escl?"var(--red-s)":"var(--green-s)"}">
-      <b style="color:${escl?"var(--red)":"var(--green)"};font-size:13.5px">${escl?"Escalation — needs a written justification":"Within the default sandbox policy"}</b>
+  $("sbOut").innerHTML=`<div style="padding:12px 14px;border-radius:10px;border:1px solid ${escl?"var(--red-t)":"var(--green-t)"};background:${escl?"var(--red-s)":"var(--green-s)"}">
+      <b style="color:${escl?"var(--red-t)":"var(--green-t)"};font-size:13.5px">${escl?"Escalation — needs a written justification":"Within the default sandbox policy"}</b>
       <p style="font-size:12.5px;margin-top:5px">${escl
         ?"Live personal data, or write access to a system of record, is never the starting point. It needs a recorded justification from the department, and it pushes the risk cap up — which costs you part of the eligibility relaxation."
         :"The department stays Data Fiduciary; the startup is only a Data Processor, and the department's accountability does not travel with the data."}</p></div>
@@ -290,8 +290,8 @@ function paintRun(){
   }
   const live=sha256(payload()),intact=S.sealed&&live===S.sealed.hash;
   $("valOut").innerHTML=`
-    <div style="padding:12px 14px;border-radius:10px;margin-bottom:12px;border:1px solid ${intact?"var(--green)":"var(--red)"};background:${intact?"var(--green-s)":"var(--red-s)"}">
-      <b style="color:${intact?"var(--green)":"var(--red)"};font-size:13.5px">${intact?"✓ Seal verified — criteria are the ones published":(S.sealed?"⚠ Seal mismatch — the criteria were changed after publication":"⚠ No seal on file — nothing to check the evidence against")}</b>
+    <div style="padding:12px 14px;border-radius:10px;margin-bottom:12px;border:1px solid ${intact?"var(--green-t)":"var(--red-t)"};background:${intact?"var(--green-s)":"var(--red-s)"}">
+      <b style="color:${intact?"var(--green-t)":"var(--red-t)"};font-size:13.5px">${intact?"✓ Seal verified — criteria are the ones published":(S.sealed?"⚠ Seal mismatch — the criteria were changed after publication":"⚠ No seal on file — nothing to check the evidence against")}</b>
       <p style="font-size:12.5px;margin-top:5px">${intact?"The validator recomputes the hash before looking at a single number, and only then assesses the evidence against those criteria.":(S.sealed?"The validator stops here and reports the discrepancy. No scale-up decision can be made on criteria that moved.":"Go back to step 1 and seal the challenge.")}</p>
     </div>
     <p style="font-size:13px;margin-bottom:9px"><b>What did the validator find?</b> <span class="cite">(this decides which purchase route is lawful)</span></p>
@@ -332,11 +332,11 @@ function paintTiers(){
   if(!S.result){
     box=`<div class="outcome" style="border-color:var(--line);background:var(--w)"><b>Nothing to route yet</b><p style="color:var(--muted)">Finish step 5 — release the milestones and record what the validator found.</p></div>`;
   }else if(S.result==="fail"){
-    box=`<div class="outcome" style="border-color:var(--red);background:var(--red-s)"><b style="color:var(--red)">No route — and that is the system working</b>
+    box=`<div class="outcome" style="border-color:var(--red-t);background:var(--red-s)"><b style="color:var(--red-t)">No route — and that is the system working</b>
       <p>Nothing is bought. The department spent ₹${FEE.toFixed(2)} lakh of evidence money to learn that, instead of a deployment budget. That is exactly what the pilot fee is for: it buys the <b>right</b>, not the obligation, to proceed.</p>
       <p style="margin-top:8px">The sealed criteria are what let a department report this honestly instead of quietly declaring success.</p></div>`;
   }else if(t===3&&S.scope==="same"&&!S.gr){
-    box=`<div class="outcome" style="border-color:var(--amber);background:var(--amber-s)"><b style="color:var(--amber)">Tier 1 is what you want — and it isn't available</b>
+    box=`<div class="outcome" style="border-color:var(--amber-t);background:var(--amber-s)"><b style="color:var(--amber-t)">Tier 1 is what you want — and it isn't available</b>
       <p>One winner in one department is the Tier 1 case. But the deeming GR has not been issued, and "won our challenge" is not a lawful ground under Rule 166. <b>The platform will not invent one.</b> It routes you to Tier 3 instead, which needs no GR at all.</p>
       <p style="margin-top:8px"><b>This is the mechanism's single policy ask:</b> one state Government Resolution, already precedented inside the same government by DAP 2020.</p></div>`;
   }else{
@@ -345,7 +345,7 @@ function paintTiers(){
                  :`It holds ${f.gem} of the 3 buyer ratings needed. The platform schedules the remaining ${3-f.gem} pilot${3-f.gem===1?"":"s"} as Startup Runway trials, so the ratings come out of work that was happening anyway.`)
       : t===2?"Competition survives, and it is contested only between firms that have all actually delivered the outcome. No GR needed."
       : "The deeming GR is in force, so Rule 166(i) is reachable with a Proprietary Article Certificate.";
-    box=`<div class="outcome" style="border-color:var(--green);background:var(--green-s)"><b style="color:var(--green)">Routed to Tier ${t}</b><p>${esc(extra)}</p></div>`;
+    box=`<div class="outcome" style="border-color:var(--green-t);background:var(--green-s)"><b style="color:var(--green-t)">Routed to Tier ${t}</b><p>${esc(extra)}</p></div>`;
   }
   $("finalOut").innerHTML=box;
   $("tiers").innerHTML=TIERS.map(x=>`<div class="tier ${x.id===t?"on":""}">
@@ -738,7 +738,7 @@ function openLicence(){
     <p style="font-size:13.5px;margin-bottom:14px">Every seller on the marketplace carries a licence record. Three of these are what unlock the procurement relaxations — the rest are quality signals a department may weigh, but cannot use to exclude a startup.</p>
     <div class="tbl-wrap" style="border:1px solid var(--line);border-radius:12px;overflow:hidden">
     <table style="width:100%;border-collapse:collapse">
-      <thead><tr><th style="text-align:left;padding:11px 13px;background:#f2f2f2;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--navy)">Registration</th><th style="text-align:left;padding:11px 13px;background:#f2f2f2;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--navy)">What it unlocks here</th></tr></thead>
+      <thead><tr><th style="text-align:left;padding:11px 13px;background:rgba(255,255,255,.10);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--navy-t)">Registration</th><th style="text-align:left;padding:11px 13px;background:rgba(255,255,255,.10);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--navy-t)">What it unlocks here</th></tr></thead>
       <tbody style="font-size:12.5px">
         <tr><td style="padding:11px 13px;border-top:1px solid var(--line-2)"><b>DPIIT recognition</b></td><td style="padding:11px 13px;border-top:1px solid var(--line-2)">The turnover and prior-experience relaxation under GFR Rule 173(i), and the EMD waiver under Rule 170(i). Without it, neither is available.</td></tr>
         <tr><td style="padding:11px 13px;border-top:1px solid var(--line-2)"><b>Udyam (MSME)</b></td><td style="padding:11px 13px;border-top:1px solid var(--line-2)">The EMD waiver under Rule 170(i) for Micro and Small Enterprises, and state tender-fee exemptions.</td></tr>
@@ -843,7 +843,7 @@ function skillTab(k){
   $("skillPane").innerHTML=`
     <p style="font-size:15.5px;color:var(--ink);max-width:760px;margin-bottom:20px">${esc(p.p)}</p>
     <div class="grid g3" style="margin-bottom:18px">${p.cards.map(c=>`<div class="card"><h4>${esc(c[0])}</h4><p style="font-size:13px;color:var(--muted);margin-top:6px">${esc(c[1])}</p></div>`).join("")}</div>
-    <div class="grid g3">${p.stats.map(s=>`<div class="kcard" style="background:var(--page);border:1px solid var(--line);border-radius:12px;padding:15px"><div style="font:600 24px var(--serif);color:var(--navy)">${esc(s[0])}</div><div style="font-size:12px;color:var(--muted)">${esc(s[1])}</div></div>`).join("")}</div>`;
+    <div class="grid g3">${p.stats.map(s=>`<div class="kcard" style="background:var(--page);border:1px solid var(--line);border-radius:12px;padding:15px"><div style="font:600 24px var(--serif);color:var(--navy-t)">${esc(s[0])}</div><div style="font-size:12px;color:var(--muted)">${esc(s[1])}</div></div>`).join("")}</div>`;
 }
 
 /* ============================================================
@@ -888,14 +888,14 @@ function renderGap(){
   $("gapBars").innerHTML=rows.map(r=>{
     const gap=r[1]-r[2],pct=Math.round(gap/r[1]*100);
     return `<div class="brow">
-      <div class="bl"><b>${esc(r[0])}</b><span class="cite" style="color:${pct>60?"var(--red)":pct>30?"var(--amber)":"var(--green)"}">${pct}% unmet · ${gap.toLocaleString("en-IN")} posts</span></div>
+      <div class="bl"><b>${esc(r[0])}</b><span class="cite" style="color:${pct>60?"var(--red-t)":pct>30?"var(--amber-t)":"var(--green-t)"}">${pct}% unmet · ${gap.toLocaleString("en-IN")} posts</span></div>
       <div class="btrack"><i class="dem" style="width:${r[1]/max*100}%"></i><i class="sup" style="width:${r[2]/max*100}%"></i></div>
     </div>`;}).join("");
   const worst=rows.slice().sort((a,b)=>(b[1]-b[2])/b[1]-(a[1]-a[2])/a[1])[0];
   const tot=rows.reduce((a,b)=>a+b[1]-b[2],0);
   $("gapCards").innerHTML=`
-    <div class="card"><div style="font:600 26px var(--serif);color:var(--navy)">${tot.toLocaleString("en-IN")}</div><div style="font-size:12px;color:var(--muted)">Unmet posts across the six trades, ${esc(d)}</div></div>
-    <div class="card"><div style="font:600 18px var(--serif);color:var(--red)">${esc(worst[0])}</div><div style="font-size:12px;color:var(--muted)">Widest gap — ${Math.round((worst[1]-worst[2])/worst[1]*100)}% of demand unmet</div></div>
+    <div class="card"><div style="font:600 26px var(--serif);color:var(--navy-t)">${tot.toLocaleString("en-IN")}</div><div style="font-size:12px;color:var(--muted)">Unmet posts across the six trades, ${esc(d)}</div></div>
+    <div class="card"><div style="font:600 18px var(--serif);color:var(--red-t)">${esc(worst[0])}</div><div style="font-size:12px;color:var(--muted)">Widest gap — ${Math.round((worst[1]-worst[2])/worst[1]*100)}% of demand unmet</div></div>
     <div class="card"><div style="font:600 15px var(--serif);color:var(--ink);margin-bottom:6px">What a department does with this</div><p style="font-size:12.5px;color:var(--muted)">A trade with a wide gap and a live challenge is where operator training gets written into the Evidence Contract — so the solution is still running at month twelve.</p></div>`;
 }
 const GAP_METHOD=`<p style="font-size:13.5px">Demand is estimated from sanctioned posts, vacancy notifications and the operator requirements declared in live Evidence Contracts. Supply is annual certified output from NSQF-aligned providers in the district, counted at assessment rather than at enrolment — because enrolment numbers flatter everyone.</p>
@@ -1014,7 +1014,7 @@ function resTab(k){
   } else {
     el.innerHTML=`<p style="color:var(--muted);margin-bottom:16px;max-width:700px">Field work happens where the network does not. Every app writes evidence offline first and hashes it before sync, so a timestamp cannot be quietly improved later.</p>
       <div class="grid g2">${APPS.map(a=>`<div class="appcard">
-        <span class="appicon" style="background:var(--blue-s);color:var(--blue)" aria-hidden="true">${a[1]}</span>
+        <span class="appicon" style="background:var(--blue-s);color:var(--blue-t)" aria-hidden="true">${a[1]}</span>
         <div style="flex:1"><h4 style="font-size:15px">${esc(a[0])}</h4><p style="font-size:12.5px;color:var(--muted);margin-top:3px">${esc(a[3])}</p>
         <span class="tag n" style="margin-top:7px;display:inline-block">${esc(a[2])}</span></div>
         <span class="qr" role="img" aria-label="Placeholder QR code"></span></div>`).join("")}</div>
