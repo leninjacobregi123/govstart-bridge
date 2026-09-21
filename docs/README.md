@@ -30,11 +30,31 @@ Your walkthrough answers, grievance tickets, language and contrast choice live i
 this browser's `localStorage`. Nothing is sent anywhere. "Reset" on any step page
 clears the walkthrough.
 
+## Colour
+
+The interface is black, white and grey. Colour appears in exactly two places,
+because in both it is evidence rather than decoration:
+
+- **the official insignia** — the tricolour rule, and the seal of the Government
+  of Maharashtra;
+- **the photographs** — real places, in their own colours.
+
+Everything a designer would otherwise reach for a hue to do is done with weight,
+rule and spacing instead. Where colour used to carry meaning — pass, warning,
+failure — the distinction is border weight and style, so it survives for a reader
+who cannot see colour at all (WCAG 1.4.1). High-contrast mode keeps its own
+yellow-on-black palette.
+
 ## Rebuilding
 
-`../build/build.py` regenerated this folder from the original single-page file
-(`../.govstart-bridge.singlepage.bak.html`). It is a **one-shot migration**, kept as
-a record. These pages are now the source of truth — edit them directly; re-running
-the build would overwrite your changes.
+`../build/build.py` generates this folder. The stages run **in order**, and the
+order matters: `extract.py` rewrites `assets/app.js` from source, so every later
+stage has to follow it, and `mono.py` has to follow `pages.py` because it greys
+the inline styles in the stamped-out markup as well as the stylesheet.
+
+    extract → guard → nav → flatten → pages → mono → search
+
+Edit the build scripts, not these pages: re-running the build overwrites `docs/`.
 
 Checks in `../build/`: `check_links.py`, `pagetest.js`, `flowtest.js`, `regress.js`.
+The three `.js` suites need `jsdom`.

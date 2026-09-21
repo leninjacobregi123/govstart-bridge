@@ -18,6 +18,7 @@ function open_(p,hash=""){
       Object.defineProperty(w,"localStorage",{value:mkStore(store),configurable:true});
       Object.defineProperty(w,"sessionStorage",{value:mkStore(sess),configurable:true});
       w.scrollTo=()=>{};
+      w.TextEncoder=TextEncoder;w.TextDecoder=TextDecoder;   // jsdom 11 omits them; every browser has them
     }});
 }
 console.log("--- state carries across page loads ---");

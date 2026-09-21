@@ -240,12 +240,22 @@ BANDS = {
  "buyer-background.html":  "pb-deeksha",
 }
 def add_band(fname, html):
-    """Put the page's photograph behind its first <section>."""
+    """Put the page's photograph behind its first <section>.
+
+    Classes the section already carries are merged into the one class
+    attribute: emitting a second one would look right in the source and
+    then be silently dropped by every parser.  `flow` is the exception -
+    it paints a flat dark panel with light text, which is the opposite
+    presentation to a photograph under a light tint, so the band wins."""
     cls = BANDS.get(fname)
     if not cls: return html
-    return re.sub(r'<section(\s+id="[^"]*")?', 
-                  lambda m: '<section%s class="photoband %s"' % (m.group(1) or "", cls),
-                  html, count=1)
+    def band(m):
+        attrs = m.group(1) or ""
+        had = re.search(r'\sclass="([^"]*)"', attrs)
+        keep = [c for c in (had.group(1).split() if had else []) if c != "flow"]
+        attrs = re.sub(r'\sclass="[^"]*"', "", attrs)
+        return '<section%s class="%s"' % (attrs, " ".join(["photoband", cls] + keep))
+    return re.sub(r'<section((?:\s+[a-zA-Z-]+="[^"]*")*)', band, html, count=1)
 
 
 # Full-bleed photographic dividers - placed between sections, never behind body text.

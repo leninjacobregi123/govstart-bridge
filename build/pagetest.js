@@ -55,7 +55,8 @@ for(const p of pages){
       .replace('<script src="assets/app.js"></script>',`<script>${app}</script>`);
   const errs=[];const vc=new VirtualConsole();
   vc.on("jsdomError",e=>errs.push(e.message.split("\n")[0]));
-  const dom=new JSDOM(html,{runScripts:"dangerously",pretendToBeVisual:true,url:"http://localhost/"+p,virtualConsole:vc});
+  const dom=new JSDOM(html,{runScripts:"dangerously",pretendToBeVisual:true,url:"http://localhost/"+p,virtualConsole:vc,
+    beforeParse(w){w.TextEncoder=TextEncoder;w.TextDecoder=TextDecoder;}});   // jsdom 11 omits them; every browser has them
   const d=dom.window.document;
   await new Promise(r=>setTimeout(r,60));
   ck(`${p}: no runtime errors`, errs.length===0, errs[0]);

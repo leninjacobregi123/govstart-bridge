@@ -14,7 +14,8 @@ function open_(p,hash=""){
     virtualConsole:new VirtualConsole(),beforeParse(w){
       Object.defineProperty(w,"localStorage",{value:mk(store),configurable:true});
       Object.defineProperty(w,"sessionStorage",{value:mk(sess),configurable:true});
-      w.scrollTo=()=>{};}});
+      w.scrollTo=()=>{};
+      w.TextEncoder=TextEncoder;w.TextDecoder=TextDecoder;}});   // jsdom 11 omits them; every browser has them
 }
 const fire=(w,el,t)=>el.dispatchEvent(new w.Event(t,{bubbles:true}));
 
