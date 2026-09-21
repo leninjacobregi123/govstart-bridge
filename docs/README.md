@@ -10,7 +10,7 @@ from `file://` with no server and no network.
 | `index.html` | Landing — the claim, and why innovation procurement is hard |
 | `run-a-challenge.html` | Overview of the six steps |
 | `step-1..6-*.html` | The mechanism, one step per page. Your choices carry forward. |
-| `where-it-runs.html` | Maharashtra's six revenue divisions + photographs |
+| `where-it-runs.html` | Maharashtra's six revenue divisions, and Mumbai as a playback |
 | `marketplace.html` | Products, services and 24×7 skill purchases |
 | `skills.html` | Skill · Employment · Entrepreneurship |
 | `schemes.html` | Scheme eligibility checker |
@@ -51,6 +51,20 @@ because a bright sky is exactly where the small type falls.
 
 Nothing is white. Cards and panels are dark glass the photograph shows through.
 
+## The Mumbai playback
+
+`where-it-runs.html` carries six photographs of Mumbai — the heritage precinct
+and the commercial district — that cross-fade and scale slowly, which is what
+reads as footage. It is a playback rather than a video file on purpose: this site
+promises to run from `file://` with no network and no external request, and six
+stills at 457 KB keep that promise where a video would not.
+
+Advancing is a timer and the progress bar is a CSS transition, so it does not
+depend on `requestAnimationFrame` being driven. `prefers-reduced-motion` turns
+the motion off and leaves the controls. Play/pause is a real button with
+`aria-pressed`, the six chapter marks are real buttons, and every frame names
+its photographer and licence.
+
 Everything a designer would otherwise reach for a hue to do is done with weight,
 rule and spacing instead. Where colour used to carry meaning — pass, warning,
 failure — the distinction is border weight and style, so it survives for a reader
@@ -64,7 +78,7 @@ order matters: `extract.py` rewrites `assets/app.js` from source, so every later
 stage has to follow it, and `mono.py` has to follow `pages.py` because it greys
 the inline styles in the stamped-out markup as well as the stylesheet.
 
-    extract → guard → nav → flatten → pages → mono → onphoto → search
+    extract → guard → nav → flatten → pages → mono → onphoto → mumbai → search
 
 Edit the build scripts, not these pages: re-running the build overwrites `docs/`.
 

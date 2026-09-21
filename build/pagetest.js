@@ -12,7 +12,8 @@ const EXPECT={
  "department-services.html":[".deptgroup", ".deptcard"],
  "why-its-hard.html":     ["#why .rev", ".strip [data-count]"],
  "run-a-challenge.html":  ["#steps a", ".stage .card"],
- "where-it-runs.html":    ["#divGrid .divcard", ".photostrip .mphoto", ".warli-medallion"],
+ "where-it-runs.html":    ["#divGrid .divcard", ".photostrip .mphoto", ".warli-medallion",
+                          "#mumbaiPlay .mp-f", "#mumbaiPlay .mp-dot"],
  "marketplace.html":      ["#mktGrid .lcard", "#catChips .chip"],
  "skills.html":           ["#skillPane .card"],
  "schemes.html":          ["#schemeList .lcard"],
@@ -63,6 +64,22 @@ for(const p of pages){
   ck(`${p}: chrome present`, !!d.querySelector(".tricolour") && !!d.querySelector(".utility .emb")
      && !!d.querySelector("header.site nav") && !!d.querySelector("footer") && !!d.querySelector(".govfoot")
      && !!d.getElementById("aiP") && !!d.getElementById("modal"));
+  if(p==="where-it-runs.html"){
+    const fr=d.querySelectorAll("#mumbaiPlay .mp-f");
+    const on=d.querySelectorAll("#mumbaiPlay .mp-f[data-on]");
+    const dot=d.querySelector('#mumbaiPlay .mp-dot[aria-current="true"]');
+    ck("mumbai: six frames", fr.length===6, fr.length+" frames");
+    ck("mumbai: exactly one frame showing", on.length===1, on.length+" showing");
+    ck("mumbai: the dot follows the frame",
+       !!dot && on.length===1 && dot.getAttribute("data-go")===on[0].getAttribute("data-i"),
+       dot?dot.getAttribute("data-go"):"no current dot");
+    ck("mumbai: the photograph is credited",
+       /Wikimedia Commons/.test((d.getElementById("mpCredit")||{}).textContent||""),
+       ((d.getElementById("mpCredit")||{}).textContent||"").slice(0,40));
+    const pause=d.getElementById("mpToggle");
+    ck("mumbai: play/pause is a real control",
+       !!pause && pause.hasAttribute("aria-pressed"), "no aria-pressed");
+  }
   const cur=d.querySelectorAll('#navlinks [aria-current="page"]');
   ck(`${p}: <=1 nav item marked current`, cur.length<=1, cur.length+" marked");
   // search must be present and correct on every page

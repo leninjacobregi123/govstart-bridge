@@ -8,13 +8,14 @@ The palette does not change - it is the same monochrome, read the other
 way round: light type on dark ground.  Colour still survives only in the
 insignia and in the photographs themselves.
 
-The scrim is 0.70 and that number is not a taste.  White text needs a
+The scrim is 0.62 and that number is not a taste.  White text needs a
 background of relative luminance <= 0.1833 to clear 4.5:1.  Compositing
 a pixel over black at alpha a scales each channel by (1-a), and the
 brightest possible pixel (255) lands at 0.1833 when (1-a) = 0.466, so
 any alpha at or above 0.534 holds for every photograph regardless of
-what is in it.  0.70 leaves headroom for the antialiasing and for 11px type
-sitting straight on a bright sky.
+what is in it.  0.62 is the floor once 15px prose has to sit straight on the
+photograph rather than on a card; the bands that carry 11px type take a
+further ground of their own.
 """
 import re, os, glob
 
@@ -77,7 +78,7 @@ FLIP = {
  "--link:#111":"--link:#ffffff",
  "--line:#ddd":"--line:rgba(255,255,255,.26)",
  "--line-2:#eee":"--line-2:rgba(255,255,255,.15)",
- "--page:#fff":"--page:transparent",  "--w:#fff":"--w:rgba(0,0,0,.55)",
+ "--page:#fff":"--page:transparent",  "--w:#fff":"--w:rgba(0,0,0,.46)",
  "--gov-bar:#f6f6f6":"--gov-bar:transparent",
  "--blue-s:#f4f4f4":"--blue-s:rgba(255,255,255,.10)",
  "--green-s:#f2f2f2":"--green-s:rgba(255,255,255,.10)",
@@ -111,7 +112,7 @@ css += """
    THE PAGE SITS ON THE PHOTOGRAPH
    =================================================================== */
 html{background:#0c0c0c}
-body{background-image:linear-gradient(rgba(0,0,0,.70),rgba(0,0,0,.70)),var(--photo);
+body{background-image:linear-gradient(rgba(0,0,0,.62),rgba(0,0,0,.62)),var(--photo);
   background-size:cover,cover;background-position:center,center 45%;
   background-repeat:no-repeat,no-repeat;background-attachment:fixed,fixed;color:#ebebeb}
 body.ph-kokan  {--photo:url(img/bg-kokan.webp)}
@@ -129,19 +130,19 @@ body.ph-deeksha{--photo:url(img/bg-deekshabhoomi.webp)}
 section{background:transparent}
 /* a photograph's sky is bright enough that 11px type over it lands under
    4.5:1, so the bands that carry small type keep a ground of their own */
-.utility,.masthead,.crumbs,.strip{background:rgba(0,0,0,.42)}
+.utility,.masthead,.crumbs,.strip{background:rgba(0,0,0,.50)}
 .stage{background:transparent}
 body{background-color:transparent}
 /* two rules outrank a bare selector and have to be answered in kind:
    one carries !important, the other is a child selector with a class */
-section[style*="background:var(--w)"]{background:rgba(0,0,0,.55)!important}
-.panelled>.wrap{background:rgba(0,0,0,.55);border-color:rgba(255,255,255,.24)}
-.protobar,header.site,footer,.govstrip{background:rgba(0,0,0,.74)}
-.govfoot{background:rgba(0,0,0,.82)}
-.flow{background:rgba(0,0,0,.46)!important}
-.cta{background:rgba(0,0,0,.50)}
-.hero{background-image:none;background-color:rgba(0,0,0,.34)}
-.hero:before{background:rgba(0,0,0,.12)}
+section[style*="background:var(--w)"]{background:rgba(0,0,0,.40)!important}
+.panelled>.wrap{background:rgba(0,0,0,.40);border-color:rgba(255,255,255,.26)}
+.protobar,header.site,footer,.govstrip{background:rgba(0,0,0,.66)}
+.govfoot{background:rgba(0,0,0,.74)}
+.flow{background:rgba(0,0,0,.44)!important}
+.cta{background:rgba(0,0,0,.46)}
+.hero{background-image:none;background-color:rgba(0,0,0,.30)}
+.hero:before{background:none}
 .masthead{border-bottom:3px solid rgba(255,255,255,.55)}
 .utility,.crumbs{border-bottom:1px solid rgba(255,255,255,.14)}
 .strip{border-bottom:1px solid rgba(255,255,255,.14)}
@@ -149,7 +150,7 @@ section[style*="background:var(--w)"]{background:rgba(0,0,0,.55)!important}
 /* cards and panels become dark glass */
 .card,.lcard,.acc,.divcard,.mphoto,.taskchip,.contract,.stepchip,.door,
 .cbox,.ticket,.rev,.appcard,.vid,.proofcard,.panelled>*,.sr-box,.stage{
-  background:rgba(0,0,0,.55);border-color:rgba(255,255,255,.24)}
+  background:rgba(0,0,0,.46);border-color:rgba(255,255,255,.26)}
 .minidemo,.note-a,.note-b,.statute,.quote,.acc .panel-in .quote,.rev .quote,
 .gate span,.seal.live,.tier .anc,.tag,.tag.a,.tag.n{
   background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.24)}
@@ -175,11 +176,11 @@ section[style*="background:var(--w)"]{background:rgba(0,0,0,.55)!important}
 h1,h2,h3,h4,.brand b,.mh-site b{color:#fff}
 p,li,td,th,dd,dt,label,figcaption{color:#e7e7e7}
 .crumbs .sepc{color:rgba(255,255,255,.45)}
-.eyebrow,.s-head .eyebrow{color:#e0e0e0}
+.eyebrow,.s-head .eyebrow{color:#ededed}
 /* the two bars overlap, so they cannot both be a fill: demand is the faint
    extent, certified supply the solid part of it, and the gap between them is
    what the page is about */
-.btrack{background:rgba(0,0,0,.5)}
+.btrack{background:rgba(0,0,0,.42)}
 .btrack .dem{background:rgba(255,255,255,.24)}
 .btrack .sup{background:#fff;opacity:1}
 a{color:#fff}

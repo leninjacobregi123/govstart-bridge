@@ -11,7 +11,7 @@
  --red:#000;--red-s:rgba(255,255,255,.12);--red-l:rgba(255,255,255,.44);
  --violet:#111;--violet-s:rgba(255,255,255,.10);
  /* warm paper ground instead of cool blue-grey */
- --line:rgba(255,255,255,.26);--line-2:rgba(255,255,255,.15);--page:transparent;--w:rgba(0,0,0,.55);
+ --line:rgba(255,255,255,.26);--line-2:rgba(255,255,255,.15);--page:transparent;--w:rgba(0,0,0,.46);
  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
  --sans:"Noto Sans","Noto Sans Devanagari",Mukta,Hind,"Nirmala UI","Lohit Devanagari",Inter,"Segoe UI",system-ui,Roboto,Arial,sans-serif;
  --serif:"Noto Serif","Noto Serif Devanagari","Tiras","Iowan Old Style",Georgia,serif;
@@ -829,7 +829,7 @@ body.hc .steps a[aria-current="page"]{background:#000!important;color:#fff!impor
    THE PAGE SITS ON THE PHOTOGRAPH
    =================================================================== */
 html{background:#0c0c0c}
-body{background-image:linear-gradient(rgba(0,0,0,.70),rgba(0,0,0,.70)),var(--photo);
+body{background-image:linear-gradient(rgba(0,0,0,.62),rgba(0,0,0,.62)),var(--photo);
   background-size:cover,cover;background-position:center,center 45%;
   background-repeat:no-repeat,no-repeat;background-attachment:fixed,fixed;color:#ebebeb}
 body.ph-kokan  {--photo:url(img/bg-kokan.webp)}
@@ -847,19 +847,19 @@ body.ph-deeksha{--photo:url(img/bg-deekshabhoomi.webp)}
 section{background:transparent}
 /* a photograph's sky is bright enough that 11px type over it lands under
    4.5:1, so the bands that carry small type keep a ground of their own */
-.utility,.masthead,.crumbs,.strip{background:rgba(0,0,0,.42)}
+.utility,.masthead,.crumbs,.strip{background:rgba(0,0,0,.50)}
 .stage{background:transparent}
 body{background-color:transparent}
 /* two rules outrank a bare selector and have to be answered in kind:
    one carries !important, the other is a child selector with a class */
-section[style*="background:var(--w)"]{background:rgba(0,0,0,.55)!important}
-.panelled>.wrap{background:rgba(0,0,0,.55);border-color:rgba(255,255,255,.24)}
-.protobar,header.site,footer,.govstrip{background:rgba(0,0,0,.74)}
-.govfoot{background:rgba(0,0,0,.82)}
-.flow{background:rgba(0,0,0,.46)!important}
-.cta{background:rgba(0,0,0,.50)}
-.hero{background-image:none;background-color:rgba(0,0,0,.34)}
-.hero:before{background:rgba(0,0,0,.12)}
+section[style*="background:var(--w)"]{background:rgba(0,0,0,.40)!important}
+.panelled>.wrap{background:rgba(0,0,0,.40);border-color:rgba(255,255,255,.26)}
+.protobar,header.site,footer,.govstrip{background:rgba(0,0,0,.66)}
+.govfoot{background:rgba(0,0,0,.74)}
+.flow{background:rgba(0,0,0,.44)!important}
+.cta{background:rgba(0,0,0,.46)}
+.hero{background-image:none;background-color:rgba(0,0,0,.30)}
+.hero:before{background:none}
 .masthead{border-bottom:3px solid rgba(255,255,255,.55)}
 .utility,.crumbs{border-bottom:1px solid rgba(255,255,255,.14)}
 .strip{border-bottom:1px solid rgba(255,255,255,.14)}
@@ -867,7 +867,7 @@ section[style*="background:var(--w)"]{background:rgba(0,0,0,.55)!important}
 /* cards and panels become dark glass */
 .card,.lcard,.acc,.divcard,.mphoto,.taskchip,.contract,.stepchip,.door,
 .cbox,.ticket,.rev,.appcard,.vid,.proofcard,.panelled>*,.sr-box,.stage{
-  background:rgba(0,0,0,.55);border-color:rgba(255,255,255,.24)}
+  background:rgba(0,0,0,.46);border-color:rgba(255,255,255,.26)}
 .minidemo,.note-a,.note-b,.statute,.quote,.acc .panel-in .quote,.rev .quote,
 .gate span,.seal.live,.tier .anc,.tag,.tag.a,.tag.n{
   background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.24)}
@@ -893,11 +893,11 @@ section[style*="background:var(--w)"]{background:rgba(0,0,0,.55)!important}
 h1,h2,h3,h4,.brand b,.mh-site b{color:#fff}
 p,li,td,th,dd,dt,label,figcaption{color:#e7e7e7}
 .crumbs .sepc{color:rgba(255,255,255,.45)}
-.eyebrow,.s-head .eyebrow{color:#e0e0e0}
+.eyebrow,.s-head .eyebrow{color:#ededed}
 /* the two bars overlap, so they cannot both be a fill: demand is the faint
    extent, certified supply the solid part of it, and the gap between them is
    what the page is about */
-.btrack{background:rgba(0,0,0,.5)}
+.btrack{background:rgba(0,0,0,.42)}
 .btrack .dem{background:rgba(255,255,255,.24)}
 .btrack .sup{background:#fff;opacity:1}
 a{color:#fff}
@@ -910,3 +910,55 @@ a{color:#fff}
 /* the language button carries !important, so the override has to as well */
 .lang-btn{background:rgba(255,255,255,.12)!important;
   border-color:rgba(255,255,255,.34)!important;color:#fff!important}
+
+/* ===================================================================
+   MUMBAI PLAYBACK
+   Six stills, cross-faded and slowly scaled, which is what reads as
+   footage. Reduced motion turns both off and leaves the controls.
+   =================================================================== */
+.mplay{margin-top:20px;border:1px solid rgba(255,255,255,.26);border-radius:14px;
+  overflow:hidden;background:rgba(0,0,0,.46)}
+.mp-stage{position:relative;aspect-ratio:16/9;overflow:hidden;background:#0c0c0c}
+/* the photograph scales, the caption does not: put the zoom on a layer of
+   its own or the words ride out of the frame with it */
+.mp-f{position:absolute;inset:0;margin:0;opacity:0;overflow:hidden;
+  transition:opacity 1.1s ease}
+.mp-f[data-on]{opacity:1}
+.mp-f:before{content:"";position:absolute;inset:0;background-size:cover;
+  background-position:center;background-image:inherit;transform:scale(1.03)}
+.mp-f[data-on]:before{transform:scale(1.10);transition:transform 7.5s linear}
+.mp-f:after{content:"";position:absolute;inset:0;
+  background:linear-gradient(transparent 40%,rgba(0,0,0,.86))}
+.mp-f figcaption{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:18px 20px}
+.mp-f figcaption b{display:block;font:600 21px/1.25 var(--serif);color:#fff}
+.mp-f figcaption span{display:block;margin-top:4px;font-size:13.5px;color:#e7e7e7;max-width:60ch}
+.mp-bar{height:3px;background:rgba(255,255,255,.18)}
+.mp-bar i{display:block;height:100%;width:0;background:#fff}
+.mp-ctl{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:11px 14px}
+.mp-pp{display:inline-flex;align-items:center;gap:7px;background:#fff;color:#111;border:0;
+  border-radius:99px;padding:6px 14px;font:600 12.5px var(--sans);cursor:pointer}
+.mp-pp:hover{background:#dcdcdc}
+.mp-ico{font-size:10px;letter-spacing:-1px}
+.mp-dots{display:flex;gap:7px}
+.mp-dot{background:none;border:0;padding:5px 2px;cursor:pointer;line-height:0}
+.mp-dot i{display:block;width:22px;height:4px;border-radius:2px;background:rgba(255,255,255,.34)}
+.mp-dot[aria-current="true"] i{background:#fff}
+.mp-cr{margin:0 0 0 auto;font-size:11px;color:#c4c4c4;text-align:right}
+.mp-cr a{color:#e7e7e7}
+@media(max-width:700px){
+  .mp-f figcaption b{font-size:17px}
+  .mp-cr{margin:4px 0 0;text-align:left;width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  .mp-f,.mp-f[data-on]{transition:none}
+  .mp-f:before,.mp-f[data-on]:before{transform:none;transition:none}
+}
+body.hc .mplay{border-color:#ff0!important;background:#000!important}
+body.hc .mp-f figcaption b{color:#ff0!important}
+body.hc .mp-dot[aria-current="true"] i,body.hc .mp-bar i{background:#ff0!important}
+.mp-f.mum-gateway{background-image:url(img/mum-gateway.webp)}
+.mp-f.mum-csmt{background-image:url(img/mum-csmt.webp)}
+.mp-f.mum-court{background-image:url(img/mum-court.webp)}
+.mp-f.mum-rajabai{background-image:url(img/mum-rajabai.webp)}
+.mp-f.mum-sealink{background-image:url(img/mum-sealink.webp)}
+.mp-f.mum-nariman{background-image:url(img/mum-nariman.webp)}
