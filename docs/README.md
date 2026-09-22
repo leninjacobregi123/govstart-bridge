@@ -101,10 +101,15 @@ the busiest of them, which is what made this page feel heavy; these three are
 open landscapes and the brightest we have. The caption under the claim names
 whichever one is showing.
 
-The hero is dimmed evenly rather than by a directional gradient. A left-heavy
-wash held the type well but read as a black smear across half the picture; an
-even 0.30 over the page's 0.44 is what the 17px lede needs over a blown-out sky,
-and it leaves the photograph whole.
+The hero's dim **fades out** rather than stopping. A flat block of 0.30 held the
+type but left a hard line across the picture where the hero ended, and a
+left-heavy gradient before that read as a black smear across half of it. It now
+holds 0.32 down to 72% — past the caption, which is the lowest piece of type —
+then falls away to nothing across the padding below. The boundary disappears and
+the photograph stays whole.
+
+The plateau ends where it does because of a measurement, not a guess: at 56% the
+caption sat in the fading zone and came in at 4.42:1. At 72% it measures 5.13:1.
 
 The scrim is 0.44 here rather than 0.62, so the photograph reads as a
 photograph. That is the floor once the picture moves: with the chrome's own

@@ -199,7 +199,12 @@ body.home .masthead .u-sep{display:none}
 
 /* the claim sits left, and the scrim is heaviest where the words are so the
    right-hand side of the photograph stays a photograph */
-body.home .hero{background-color:rgba(0,0,0,.30);padding:54px 0 128px;text-align:left}
+/* the dim fades out instead of stopping: a flat block left a hard line
+   across the picture where the hero ended. Full strength through the type,
+   then away to nothing across the padding below it. */
+body.home .hero{background-color:transparent;padding:54px 0 128px;text-align:left;
+  background-image:linear-gradient(rgba(0,0,0,.32) 0%,rgba(0,0,0,.32) 72%,
+    rgba(0,0,0,.22) 85%,rgba(0,0,0,.08) 94%,rgba(0,0,0,0) 100%)}
 /* an even dim rather than a directional wash: the gradient read as a black
    smear across the left of the picture. .30 over the page's .44 is what the
    17px lede needs over a blown-out sky, measured rather than guessed. */
