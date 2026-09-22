@@ -148,46 +148,60 @@ def frame(sl, x, y, w, h, title):
 
 
 # ---- what to say while the diagram is on screen ----------------------
-SCRIPT = """SPEAKING SCRIPT \u2014 about two minutes
+# Written as an argument, not a tour. Each phase opens with the question the
+# previous one leaves the listener holding, so they are always one step ahead
+# of the answer. Module names are avoided: nobody remembers "Clause Injector".
+SCRIPT = """SPEAKING SCRIPT \u2014 about two and a half minutes
 
-OPEN (5s)
-This is the whole mechanism in four phases. Follow the arrows left to right.
+OPEN (15s)
+Start with the sentence the whole design comes from: a department cannot buy
+an innovation. Procurement law says describe what you are buying before you
+buy it, and an innovation is the one thing you cannot describe yet. So we
+stopped trying. We split the purchase in two. First you buy the evidence.
+Then, once that evidence has told you what the thing actually is, you buy
+the product. These four phases are what it takes to do that lawfully.
 
-1  CHALLENGE AUTHORING (25s)
-It starts with a department problem, not a product. In the Challenge Studio
-the officer writes the outcome they need and the KPIs that would prove it.
-The Clause Injector attaches the Rule 173(i) language that permits the
-eligibility relaxation. Then the KPI Seal hashes the whole criteria set with
-SHA-256 and publishes it \u2014 before anyone has seen a single solution. From
-this moment, the target cannot move.
+PHASE 1 \u2014 who decides what counts as success? (30s)
+If you are going to award on evidence, that is the first question \u2014 and
+when do they decide? Because if the yardstick can move after the results are
+in, nobody trusts the award. So the officer writes the outcome they need \u2014
+not a product, an outcome \u2014 and the measures that would prove it. We hash
+that set and publish it with the challenge, before a single startup has been
+seen. Change one number afterwards and the seal visibly breaks. The
+yardstick is fixed, in public.
 
-2  DISCOVERY AND SELECTION (25s)
-The published challenge goes to the Startup India and MSInS registries. The
-Screening Engine filters on the risk cap written into the contract, not on
-turnover \u2014 so a first-time supplier is not disqualified before being read.
-Clear the cap and you are eligible; fail it and the platform tells you which
-axis you failed on. The shortlist goes into the pilot.
+PHASE 2 \u2014 so who is allowed to compete? (30s)
+Normally a turnover filter and a prior-contract requirement, which excludes
+exactly the young firm that can solve the problem. The rule does let you
+relax that, but only if you declare it upfront and can justify it. Our
+justification is a risk cap. We score the pilot on five axes: how far damage
+spreads, what data is exposed, whether it is reversible, what it costs, who
+depends on it. Cap the risk in the contract and turnover stops being a proxy
+for anything. So we screen on the cap, not the balance sheet.
 
-3  PILOT EXECUTION (25s)
-MSInS signs an Evidence Contract, milestone-paid. Note what is not happening:
-the department is not buying a product yet. The Sandbox Provisioner gives the
-startup masked, DPDP-compliant data in one taluka, and the KPI Tracker takes
-evidence at each milestone and releases payment against it. If the pilot
-fails here, the state has spent the cost of the evidence, not the cost of a
-rollout.
+PHASE 3 \u2014 you have picked someone; what are you paying for? (35s)
+Not a product. That is the whole point. MSInS signs an Evidence Contract,
+paid milestone by milestone. The startup works in a sandbox on masked data,
+in one taluka, under DPDP. Each milestone releases money only when its
+evidence lands. And here is the number a finance department cares about: if
+this fails, the state has spent the cost of finding out \u2014 not the cost of
+a rollout it then has to unwind.
 
-4  VALIDATION AND SCALE-UP (30s)
-The validator named back in phase one \u2014 before any result existed \u2014
-recomputes the seal and checks the evidence against the published criteria.
-If the KPIs are met, the Tier Router picks the lawful route from facts it
-already holds: a PAC under 166(i), a limited tender to the winners, or the
-GeM catalogue. That becomes the Deployment Contract, and the department
-buys. If no route fits, it says so rather than inventing one.
+PHASE 4 \u2014 it worked. Can you actually buy it? (35s)
+This is the question that kills most pilots. The validator was named back in
+phase one, before any result existed; they recompute the seal and check the
+evidence against the published criteria. If it passed, the platform picks
+the route from facts it already holds \u2014 a Proprietary Article Certificate,
+a limited tender to the winners, or the GeM catalogue. That becomes the
+deployment contract, and the department buys. And if none of the three
+applies, it says so. It will not manufacture a route, because a route that
+does not survive audit is not a route.
 
-CLOSE (10s)
-Four phases. Everything above the dashed strip is running in the prototype
-today \u2014 you can open it and check. The four below it are integrations we
-have scoped but not built.
+CLOSE (15s)
+So: fix the yardstick, open the gate lawfully, buy the proof cheaply, and
+have a way out that already exists. Four phases, and no amendment to the
+General Financial Rules. Everything above the dashed strip is running today
+\u2014 you can open it and check.
 """
 
 
