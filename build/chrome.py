@@ -24,8 +24,7 @@ import re, os, glob
 DOCS = "/home/lenin/Apps Developed/SIH 26136/docs"
 CSS  = os.path.join(DOCS, "assets", "style.css")
 
-NOTE = ('<span class="mh-note">Prototype \u00b7 SIH26136 \u00b7 not an official '
-        'Government of Maharashtra or MSInS portal \u00b7 simulated data</span>')
+NOTE = ""   # the disclosure lives in the footer
 
 
 def block(html, start_tag, open_re):
@@ -42,7 +41,7 @@ def block(html, start_tag, open_re):
 
 def strip(path):
     h = open(path, encoding="utf-8").read()
-    if 'class="mh-note"' in h:
+    if 'class="mh-embs"' in h:
         return False
 
     # 1. the accessibility cluster moves to the footer, beside the policies
@@ -72,11 +71,16 @@ def strip(path):
     assert mh, "no masthead in " + os.path.basename(path)
     h = (h[:mh[0]]
          + '<div class="masthead"><div class="wrap">'
-         + '<span class="mh-embs">' + nat + moh + "</span>" + NOTE
+         + '<span class="mh-embs">' + nat + moh + "</span>"
          + "</div></div>"
          + h[mh[1]:])
 
-    # 4. the utility bar has nothing left in it
+    # 4. the tricolour rule is decoration, and it is aria-hidden already
+    tc = block(h, '<div class="tricolour"', r"</?div\b[^>]*>")
+    if tc:
+        h = h[:tc[0]] + h[tc[1]:]
+
+    # 5. the utility bar has nothing left in it
     ut = block(h, '<div class="utility">', r"</?div\b[^>]*>")
     if ut:
         h = h[:ut[0]] + h[ut[1]:]
@@ -90,8 +94,11 @@ ADD = """
    THE TOP OF THE PAGE
    Two emblems, and the one line that keeps showing them honest.
    =================================================================== */
-.masthead,body.home .masthead{background:rgba(0,0,0,.46);border-bottom:0;
-  padding:0}
+.masthead,body.home .masthead{background:transparent;border-bottom:0;padding:0}
+/* nothing behind them now, so the artwork carries its own shadow — a white
+   emblem over a bright sky would otherwise disappear */
+.masthead .emb{filter:drop-shadow(0 1px 3px rgba(0,0,0,.9))
+  drop-shadow(0 0 8px rgba(0,0,0,.55))}
 /* flush to the corner rather than inside the centred measure */
 .masthead>.wrap{max-width:none;width:100%;display:flex;align-items:center;
   gap:14px;flex-wrap:wrap;padding:9px 22px}

@@ -61,7 +61,7 @@ for(const p of pages){
   const d=dom.window.document;
   await new Promise(r=>setTimeout(r,60));
   ck(`${p}: no runtime errors`, errs.length===0, errs[0]);
-  ck(`${p}: chrome present`, !!d.querySelector(".tricolour") && !!d.querySelector(".emb-nat-w, .utility .emb")   // the landing page folds its chrome into one row
+  ck(`${p}: chrome present`, !!d.querySelector(".emb-nat-w, .utility .emb")   // the landing page folds its chrome into one row
      && !!d.querySelector("header.site nav") && !!d.querySelector("footer") && !!d.querySelector(".govfoot")
      && !!d.getElementById("aiP") && !!d.getElementById("modal"));
   if(p==="where-it-runs.html"){

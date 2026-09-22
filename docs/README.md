@@ -66,14 +66,19 @@ Nothing is white. Cards and panels are dark glass the photograph shows through.
 ## The top of every page
 
 Two emblems, top left — the State Emblem of India and the seal of the Government
-of Maharashtra — and one small line beside them. Nothing else.
+of Maharashtra — sitting directly on the photograph. No band behind them, no
+tricolour rule, no text. The artwork carries its own drop shadow, because a
+white emblem over a bright sky would otherwise disappear.
 
-Two things were moved rather than deleted, because neither is decoration. The
-**disclaimer** stays as that one line: this site shows both emblems, use of the
-State Emblem is governed by the State Emblem of India (Prohibition of Improper
-Use) Act, 2005, and showing them with no correction anywhere above the fold
-would present a student prototype as a government portal. The full notice is
-still in the footer, where it always was.
+**Where the disclosure lives.** Use of the State Emblem is governed by the State
+Emblem of India (Prohibition of Improper Use) Act, 2005, so this site says
+plainly what it is. That statement is now in the footer only, on every page: the
+`.disc` block names the prototype, states it is not an official portal of the
+Government of Maharashtra or MSInS, and explains that the emblems appear solely
+to illustrate how an official deployment would be branded. The GIGW band under
+it repeats that it is not a live government service and is not hosted, endorsed
+or certified by NIC, STQC or any government body. If that footer text is ever
+removed, the emblems should come off the page with it.
 
 The **accessibility controls** — screen-reader page, text size, high contrast,
 Marathi — moved down beside the statutory policy links, which is where most
