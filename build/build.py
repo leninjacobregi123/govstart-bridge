@@ -13,6 +13,7 @@ STAGES = [("extract.py", "extract CSS / JS / images into assets/"),
           ("mono.py",    "monochrome the interface"),
           ("onphoto.py", "put the page on the photograph"),
           ("mumbai.py",  "Mumbai, as a playback"),
+          ("landing.py", "the landing page's main screen"),
           ("search.py",  "build the offline search index")]
 for script, what in STAGES:
     print(f"\n\033[1m== {script} — {what}\033[0m")

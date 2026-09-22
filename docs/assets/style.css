@@ -988,3 +988,67 @@ body.hc .mp-dot[aria-current="true"] i,body.hc .mp-bar i{background:#ff0!importa
 .mp-f.mum-rajabai{background-image:url(img/mum-rajabai.webp)}
 .mp-f.mum-sealink{background-image:url(img/mum-sealink.webp)}
 .mp-f.mum-nariman{background-image:url(img/mum-nariman.webp)}
+
+/* ===================================================================
+   THE LANDING PAGE
+   The photograph runs behind the chrome, the claim sits left, and the
+   navigation floats under it. Dark throughout - a white bar on this one
+   page would read as a different site.
+   =================================================================== */
+body.home .bgshow i{background-position:center 68%}
+body.home .bgshow b{background:rgba(0,0,0,.34)}      /* the picture, brighter */
+/* the chrome keeps a thin ground: over a bright sky, 11px type on bare
+   photograph comes in at 2.2:1, and the picture still reads through .42 */
+body.home .utility,body.home .masthead{background:rgba(0,0,0,.44);border-bottom:0}
+body.home .crumbs{display:none}                      /* a breadcrumb to itself */
+body.home .masthead{padding-bottom:4px}
+
+/* the claim sits left, and the scrim is heaviest where the words are so the
+   right-hand side of the photograph stays a photograph */
+body.home .hero{background-color:transparent;padding:54px 0 128px;text-align:left}
+body.home .hero:before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(97deg,rgba(0,0,0,.86) 0%,rgba(0,0,0,.78) 30%,
+    rgba(0,0,0,.34) 62%,rgba(0,0,0,.10) 84%,rgba(0,0,0,.04) 100%)}
+body.home .hero>.wrap{position:relative;z-index:1;text-align:left}
+body.home .hero h1{text-align:left;max-width:760px;font-size:52px;line-height:1.12;
+  margin:0 0 18px;font-weight:600}
+body.home .hero h1 em{font-style:normal;font-weight:800;color:#fff}
+body.home .hero p{text-align:left;margin-left:0;max-width:46ch;font-size:17px;
+  color:#ededed}
+body.home .hero .hero-cta,body.home .hero .btnrow{justify-content:flex-start}
+body.home .hero .cap,body.home .hero .photo-cap{text-align:left}
+
+/* the navigation, floated under the claim */
+body.home header.site{background:transparent;margin-top:-74px;position:relative;z-index:6}
+body.home header.site>.wrap.nav{max-width:1240px;margin:0 auto;
+  background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.20);
+  border-radius:16px;padding:7px 12px;
+  box-shadow:0 18px 40px rgba(0,0,0,.45)}
+body.home header.site .navlinks{gap:2px}
+body.home .navlinks>a,body.home .mmbtn{border-radius:10px}
+
+/* a mark beside each nav item, in the same geometric family as the rest */
+body.home [data-i18n="nav_mech"]:before  {content:"\25F4\00a0\00a0"}
+body.home [data-i18n="nav_market"]:before{content:"\25C8\00a0\00a0"}
+body.home [data-i18n="nav_ev"]:before    {content:"\00a7\00a0\00a0"}
+body.home [data-i18n="nav_dept"]:before  {content:"\25A6\00a0\00a0"}
+body.home [data-i18n="nav_about"]:before {content:"\25CE\00a0\00a0"}
+body.home .navlinks .cv:before{content:none}
+
+/* the bands below sit on a ground of their own, because the page scrim is
+   lighter here than anywhere else on the site */
+body.home main>section>.wrap{background:rgba(0,0,0,.46);border-radius:20px;
+  padding:40px 34px;margin-top:26px;margin-bottom:26px}
+body.home main>section{background:transparent}
+
+@media(max-width:900px){
+  body.home .hero h1{font-size:34px;max-width:none}
+  body.home .hero{padding:36px 0 96px}
+  body.home header.site{margin-top:-58px}
+  body.home header.site>.wrap.nav{margin:0 14px;border-radius:14px}
+  body.home main>section>.wrap{padding:26px 18px;border-radius:16px}
+}
+body.hc.home .hero:before{background:#000!important}
+body.hc.home .utility,body.hc.home .masthead{background:#000!important}
+body.hc.home main>section>.wrap{background:#000!important;border:1px solid #ff0!important}
+body.hc.home header.site>.wrap.nav{background:#000!important;border-color:#ff0!important}

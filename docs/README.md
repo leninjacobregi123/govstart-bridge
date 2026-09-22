@@ -63,6 +63,24 @@ of its own, which is where almost all of it lives.
 
 Nothing is white. Cards and panels are dark glass the photograph shows through.
 
+## The landing page
+
+`index.html` is the one page built to its own rules, because it is the one page
+most people will only ever see once. The photograph runs behind the government
+chrome rather than under it, the claim sits left rather than centred, and the
+navigation floats below the claim as a rounded bar instead of sitting in a
+full-width strip above it.
+
+It holds **one** photograph — Pratapgad fort — rather than moving through five.
+The complaint that produced this page was that it was dark and busy, and a
+picture that changes under the claim is both. The scrim is 0.34 here rather than
+0.62, so the photograph reads as a photograph; the chrome and every band below
+carry a ground of their own to pay for that, and each was measured rather than
+guessed.
+
+Nothing on it is white. A light bar on this one page would read as a different
+site.
+
 ## The Mumbai playback
 
 `where-it-runs.html` carries six photographs of Mumbai — the heritage precinct
@@ -90,7 +108,8 @@ order matters: `extract.py` rewrites `assets/app.js` from source, so every later
 stage has to follow it, and `mono.py` has to follow `pages.py` because it greys
 the inline styles in the stamped-out markup as well as the stylesheet.
 
-    extract → guard → nav → flatten → pages → mono → onphoto → mumbai → search
+    extract → guard → nav → flatten → pages → mono → onphoto → mumbai
+            → landing → search
 
 Edit the build scripts, not these pages: re-running the build overwrites `docs/`.
 
