@@ -63,6 +63,24 @@ of its own, which is where almost all of it lives.
 
 Nothing is white. Cards and panels are dark glass the photograph shows through.
 
+## The top of every page
+
+Two emblems, top left — the State Emblem of India and the seal of the Government
+of Maharashtra — and one small line beside them. Nothing else.
+
+Two things were moved rather than deleted, because neither is decoration. The
+**disclaimer** stays as that one line: this site shows both emblems, use of the
+State Emblem is governed by the State Emblem of India (Prohibition of Improper
+Use) Act, 2005, and showing them with no correction anywhere above the fold
+would present a student prototype as a government portal. The full notice is
+still in the footer, where it always was.
+
+The **accessibility controls** — screen-reader page, text size, high contrast,
+Marathi — moved down beside the statutory policy links, which is where most
+government sites keep them. They kept their handlers and their keyboard order,
+and the skip link stays out of the way until it is focused. The site claims
+GIGW 3.0 in its own footer and that claim still holds.
+
 ## The landing page
 
 `index.html` is the one page built to its own rules, because it is the one page
@@ -123,7 +141,7 @@ stage has to follow it, and `mono.py` has to follow `pages.py` because it greys
 the inline styles in the stamped-out markup as well as the stylesheet.
 
     extract → guard → nav → flatten → pages → mono → onphoto → mumbai
-            → landing → search
+            → landing → chrome → search
 
 Edit the build scripts, not these pages: re-running the build overwrites `docs/`.
 
