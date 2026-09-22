@@ -96,11 +96,13 @@ Everything here was generated from `govstart-bridge-icon.svg` plus the two clean
 |---|---|
 | `technical-approach.pptx` | One 16:9 slide — the five technical stages and the four-stage architecture |
 | `key-innovations.pptx` | One 16:9 slide — six key innovations, what is built, and the numbers |
+| `key-highlights.pptx` | One 16:9 slide — five problems in public procurement today, and the five answers |
 
 Both are **editable**: every box, arrow and block is a real PowerPoint shape.
 A matching `.png` sits beside each if you only need to drop a picture in.
-Rebuild with `python3 ../build/slide_technical.py` and
-`python3 ../build/slide_innovations.py` (both need `python-pptx`).
+Rebuild with `python3 ../build/slide_technical.py`,
+`python3 ../build/slide_innovations.py` and `python3 ../build/slide_highlights.py`
+(all need `python-pptx`).
 
 Edit the content at the top of those two files rather than in PowerPoint, so
 the slides and the site stay in step.
