@@ -87,3 +87,23 @@ The GovStart Bridge mark has no such limit: it is vector, and `govstart-bridge-i
 ## Rebuilding
 
 Everything here was generated from `govstart-bridge-icon.svg` plus the two cleaned emblem PNGs, composed in HTML and rasterised with headless Chrome at 2× device scale. To change the wordmark or the strip text, edit the HTML and re-render — the type is Inter and EB Garamond, the same faces as the prototype site.
+
+---
+
+## Technical Approach slide
+
+| File | What it is |
+|---|---|
+| `technical-approach.pptx` | One 16:9 slide, **editable** — every box, arrow and block is a real PowerPoint shape |
+| `technical-approach.png` | The same slide as an image, if you only need to drop a picture in |
+
+Rebuild it with `python3 ../build/slide_technical.py` (needs `python-pptx`).
+Edit the five left-hand blocks and the four stage rows at the top of that file
+rather than in PowerPoint, so the two stay in step.
+
+**One thing to know before you present it.** The right-hand diagram shows only
+what the prototype actually does. Four boxes from the flow diagram — DigiLocker
+entity verification, expert-panel scoring, a sanction builder, and Treasury/PFMS
+release — are drawn separately, dashed, under *Planned integrations*, because a
+judge can open the site and check. If you would rather claim them as built, they
+have to be built first.
