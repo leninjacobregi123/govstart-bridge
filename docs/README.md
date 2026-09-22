@@ -81,6 +81,15 @@ guessed.
 Nothing on it is white. A light bar on this one page would read as a different
 site.
 
+Its chrome is one row rather than four stacked bars. Everything the page is
+obliged to carry is still there and still reachable: the disclaimer — this is
+the page most likely to be seen on its own, and it shows both emblems — the skip
+link, the screen-reader page, text size, high contrast and Marathi. The notice
+keeps the sentence that matters and the full text stays in the footer; the
+accessibility controls fold behind one labelled button that reports
+`aria-expanded`, keep their inline handlers, and keep the skip link outside the
+fold where it belongs.
+
 ## The Mumbai playback
 
 `where-it-runs.html` carries six photographs of Mumbai — the heritage precinct

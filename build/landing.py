@@ -59,6 +59,51 @@ def run():
                ' style="background-image:url(assets/img/bg-pratapgad.webp)"></i>'
                '<b></b></div>', h, count=1, flags=re.S)
 
+    # ---- four stacked bars become one notice line and one row ------
+    # Everything the page is obliged to carry stays: the disclaimer (this
+    # page shows both emblems, and is the one most likely to be seen on its
+    # own), the skip link, the screen-reader page, text size, high contrast
+    # and Marathi. They stop being four full-width bars.
+
+    # 1. the notice keeps the sentence that matters; the full text is in the
+    #    footer of every page, including this one
+    h = h.replace(
+      "<span>Student project for Smart India Hackathon 2026 (SIH26136). "
+      "<b>Not an official portal of the Government of Maharashtra or MSInS, "
+      "and not endorsed by them.</b> All data shown is simulated.</span>",
+      "<span><b>Not an official portal of the Government of Maharashtra or "
+      "MSInS.</b> Simulated data \u00b7 SIH26136.</span>", 1)
+
+    # 2. the accessibility controls fold behind one labelled button. They stay
+    #    in the DOM and keep their handlers, which are inline, so nothing is
+    #    rebound; the skip link stays outside the fold where it belongs.
+    h = h.replace(
+      '<span class="u-sep" aria-hidden="true"></span>\n      '
+      '<a href="#" onclick="openPolicy(\'screen\');return false" data-i18n="sr">',
+      '<button class="a11y-t" id="a11yT" aria-expanded="false" '
+      'aria-controls="a11yG" onclick="a11yToggle()">Accessibility</button>'
+      '<span class="a11y-g" id="a11yG">'
+      '<a href="#" onclick="openPolicy(\'screen\');return false" data-i18n="sr">', 1)
+    h = h.replace(
+      '<button class="lang-btn" onclick="toggleLang()" id="langBtn">'
+      '<span lang="mr" class="on">\u092e\u0930\u093e\u0920\u0940</span></button>',
+      '<button class="lang-btn" onclick="toggleLang()" id="langBtn">'
+      '<span lang="mr" class="on">\u092e\u0930\u093e\u0920\u0940</span></button></span>', 1)
+
+    # 3. the two halves of the utility bar move into the masthead row
+    ul = block(h, '<span class="u-l">', r"</?span\b[^>]*>")
+    ur = block(h, '<span class="u-r">', r"</?span\b[^>]*>")
+    assert ul and ur, "utility bar not as expected"
+    u_l, u_r = h[ul[0]:ul[1]], h[ur[0]:ur[1]]
+    h = h.replace(u_r, "", 1).replace(u_l, "", 1)
+    mh = '<div class="masthead">\n  <div class="wrap">'
+    assert h.count(mh) == 1, "masthead not as expected"
+    h = h.replace(mh, mh + u_l, 1)
+    # product first, then the accessibility fold, at the far right
+    mhs = block(h, '<span class="mh-site">', r"</?span\b[^>]*>")
+    assert mhs, "no mh-site"
+    h = h[:mhs[1]] + u_r + h[mhs[1]:]
+
     # the caption names the photograph, and the photograph has changed
     h = h.replace("<p class=\"hnote\">Sahyadri range, Raigad district</p>",
                   "<p class=\"hnote\">Pratapgad fort, Satara district</p>", 1)
@@ -74,8 +119,26 @@ def run():
     css = open(CSS, encoding="utf-8").read()
     if "THE LANDING PAGE" not in css:
         open(CSS, "w", encoding="utf-8").write(css + ADD)
+
+    app = os.path.join(DOCS, "assets", "app.js")
+    js = open(app, encoding="utf-8").read()
+    if "a11yToggle" not in js:
+        open(app, "w", encoding="utf-8").write(js + A11Y_JS)
     print("landing page: chrome over the photograph, claim left, nav floated")
 
+
+A11Y_JS = """
+/* ---- the accessibility fold, landing page only --------------------
+   The controls stay in the DOM and keep their inline handlers; this only
+   shows and hides them. */
+function a11yToggle(){
+  var g=document.getElementById("a11yG"), b=document.getElementById("a11yT");
+  if(!g||!b) return;
+  var open=g.hasAttribute("data-open");
+  if(open) g.removeAttribute("data-open"); else g.setAttribute("data-open","1");
+  b.setAttribute("aria-expanded", open?"false":"true");
+}
+"""
 
 ADD = """
 /* ===================================================================
@@ -91,6 +154,38 @@ body.home .bgshow b{background:rgba(0,0,0,.34)}      /* the picture, brighter */
 body.home .utility,body.home .masthead{background:rgba(0,0,0,.44);border-bottom:0}
 body.home .crumbs{display:none}                      /* a breadcrumb to itself */
 body.home .masthead{padding-bottom:4px}
+
+/* one chrome row: emblems and department left, product and the accessibility
+   fold right. The notice above it is one line. */
+body.home .protobar .wrap{padding:6px 24px;font-size:12px}
+body.home .utility{display:none}
+body.home .masthead>.wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:10px 24px}
+body.home .masthead .u-l{display:flex;align-items:center;gap:8px;flex:none}
+body.home .masthead .emb-nat-w{width:19px;height:27px}
+body.home .masthead .emb-moh{width:42px;height:42px}
+body.home .masthead .gname{font-size:11.5px;line-height:1.25;color:#dedede}
+body.home .masthead .gname .mr{font-size:10.5px;display:block;color:#c4c4c4}
+body.home .masthead .mh-txt{min-width:0}
+body.home .masthead .dep-mr{font-size:14px}
+body.home .masthead .dep-en{font-size:11.5px}
+body.home .masthead .u-r{margin-left:auto;display:flex;align-items:center;gap:8px;
+  flex-wrap:wrap;font-size:11.5px}
+body.home .masthead .mh-site{margin-left:0;padding-left:14px;
+  border-left:1px solid rgba(255,255,255,.22)}
+body.home .u-skip{position:absolute;left:-9999px}
+body.home .u-skip:focus{position:static;left:auto}
+body.home .a11y-t{background:rgba(255,255,255,.12);color:#fff;
+  border:1px solid rgba(255,255,255,.30);border-radius:99px;
+  padding:3px 11px;font:600 11.5px var(--sans);cursor:pointer}
+body.home .a11y-t:hover{background:rgba(255,255,255,.2)}
+body.home .a11y-g{display:none;align-items:center;gap:8px}
+body.home .a11y-g[data-open]{display:flex}
+body.home .masthead .u-sep{display:none}
+@media(max-width:700px){
+  body.home .masthead .mh-site{border-left:0;padding-left:0}
+  body.home .masthead .u-r{margin-left:0;width:100%}
+}
 
 /* the claim sits left, and the scrim is heaviest where the words are so the
    right-hand side of the photograph stays a photograph */

@@ -1632,3 +1632,14 @@ init();
   show(0);
   play(!still);
 })();
+
+/* ---- the accessibility fold, landing page only --------------------
+   The controls stay in the DOM and keep their inline handlers; this only
+   shows and hides them. */
+function a11yToggle(){
+  var g=document.getElementById("a11yG"), b=document.getElementById("a11yT");
+  if(!g||!b) return;
+  var open=g.hasAttribute("data-open");
+  if(open) g.removeAttribute("data-open"); else g.setAttribute("data-open","1");
+  b.setAttribute("aria-expanded", open?"false":"true");
+}
