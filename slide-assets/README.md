@@ -98,12 +98,17 @@ Everything here was generated from `govstart-bridge-icon.svg` plus the two clean
 | `key-innovations.pptx` | One 16:9 slide — six key innovations, what is built, and the numbers |
 | `key-highlights.pptx` | One 16:9 slide — five problems in public procurement today, and the five answers |
 | `impact-and-benefits.pptx` | One 16:9 slide — who is better off and how, grouped social / economic / governance |
+| `impact-benefits-sih.pptx` | The same content laid out to the **SIH 2026 template** — team badge, two column headers, three impact chips, foot band |
 
 Both are **editable**: every box, arrow and block is a real PowerPoint shape.
 A matching `.png` sits beside each if you only need to drop a picture in.
 Rebuild with `python3 ../build/slide_technical.py`,
 `python3 ../build/slide_innovations.py`, `python3 ../build/slide_highlights.py`
-and `python3 ../build/slide_impact.py` (all need `python-pptx`).
+`python3 ../build/slide_impact.py` and `python3 ../build/slide_impact_sih.py`
+(all need `python-pptx`).
+
+`impact-benefits-sih.pptx` leaves a dashed placeholder where the SIH 2026 logo
+goes — paste yours over it before you present.
 
 Edit the content at the top of those two files rather than in PowerPoint, so
 the slides and the site stay in step.
