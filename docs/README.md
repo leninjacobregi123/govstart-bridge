@@ -65,10 +65,11 @@ Nothing is white. Cards and panels are dark glass the photograph shows through.
 
 ## The top of every page
 
-Two emblems, top left — the State Emblem of India and the seal of the Government
-of Maharashtra — sitting directly on the photograph. No band behind them, no
-tricolour rule, no text. The artwork carries its own drop shadow, because a
-white emblem over a bright sky would otherwise disappear.
+Both emblems and the wording that says whose site this is — Government of
+Maharashtra, the department, and the product — over the photograph. There is no
+band behind it and no tricolour rule: a gradient that fades out carries the
+type, which is what keeps 11px text legible over a blown-out sky without
+putting a hard-edged bar across the picture.
 
 **Where the disclosure lives.** Use of the State Emblem is governed by the State
 Emblem of India (Prohibition of Improper Use) Act, 2005, so this site says
@@ -99,6 +100,11 @@ plateau and the Sahyadri range. The two left out are the dimmest of the set and
 the busiest of them, which is what made this page feel heavy; these three are
 open landscapes and the brightest we have. The caption under the claim names
 whichever one is showing.
+
+The hero is dimmed evenly rather than by a directional gradient. A left-heavy
+wash held the type well but read as a black smear across half the picture; an
+even 0.30 over the page's 0.44 is what the 17px lede needs over a blown-out sky,
+and it leaves the photograph whole.
 
 The scrim is 0.44 here rather than 0.62, so the photograph reads as a
 photograph. That is the floor once the picture moves: with the chrome's own

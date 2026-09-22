@@ -199,10 +199,11 @@ body.home .masthead .u-sep{display:none}
 
 /* the claim sits left, and the scrim is heaviest where the words are so the
    right-hand side of the photograph stays a photograph */
-body.home .hero{background-color:transparent;padding:54px 0 128px;text-align:left}
-body.home .hero:before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(97deg,rgba(0,0,0,.86) 0%,rgba(0,0,0,.78) 30%,
-    rgba(0,0,0,.34) 62%,rgba(0,0,0,.10) 84%,rgba(0,0,0,.04) 100%)}
+body.home .hero{background-color:rgba(0,0,0,.30);padding:54px 0 128px;text-align:left}
+/* an even dim rather than a directional wash: the gradient read as a black
+   smear across the left of the picture. .30 over the page's .44 is what the
+   17px lede needs over a blown-out sky, measured rather than guessed. */
+body.home .hero:before{content:none}
 body.home .hero>.wrap{position:relative;z-index:1;text-align:left}
 body.home .hero h1{text-align:left;max-width:760px;font-size:52px;line-height:1.12;
   margin:0 0 18px;font-weight:600}

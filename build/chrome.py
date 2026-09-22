@@ -58,20 +58,31 @@ def strip(path):
     if pb:
         h = h[:pb[0]] + h[pb[1]:]
 
-    # 3. the masthead keeps the two emblems and the one line under them.
-    #    On the landing page they already sit together; everywhere else the
-    #    State Emblem is still up in the utility bar, so look across the
-    #    whole head rather than inside the masthead alone.
+    # 3. the masthead keeps both emblems and the wording that identifies
+    #    whose site this is: Government of Maharashtra, the department, and
+    #    the product. Only the prototype banner and the rule come off.
     head = h[:h.find("<main")]
-    nat = re.search(r'<span class="emb emb-nat-w"[^>]*></span>', head)
-    moh = re.search(r'<span class="emb emb-moh"[^>]*></span>', head)
-    assert nat and moh, "expected both emblems in " + os.path.basename(path)
-    nat, moh = nat.group(0), moh.group(0)
+    ul = block(h, '<span class="u-l">', r"</?span\b[^>]*>")
+    u_l = h[ul[0]:ul[1]] if ul else ""
+    if ul:
+        h = h[:ul[0]] + h[ul[1]:]
     mh = block(h, '<div class="masthead">', r"</?div\b[^>]*>")
     assert mh, "no masthead in " + os.path.basename(path)
+    seg = h[mh[0]:mh[1]]
+
+    def keep(tag, cls):
+        b = block(seg, '<%s class="%s"' % (tag, cls), r"</?%s\b[^>]*>" % tag)
+        return seg[b[0]:b[1]] if b else ""
+
+    moh   = (re.search(r'<span class="emb emb-moh"[^>]*></span>', seg)
+             or re.search(r'<span class="emb emb-moh"[^>]*></span>', head))
+    assert moh, "no state seal in " + os.path.basename(path)
+    mh_txt  = keep("span", "mh-txt")
+    mh_site = keep("span", "mh-site")
     h = (h[:mh[0]]
          + '<div class="masthead"><div class="wrap">'
-         + '<span class="mh-embs">' + nat + moh + "</span>"
+         + '<span class="mh-embs">' + u_l + moh.group(0) + "</span>"
+         + mh_txt + mh_site
          + "</div></div>"
          + h[mh[1]:])
 
@@ -92,20 +103,26 @@ def strip(path):
 ADD = """
 /* ===================================================================
    THE TOP OF THE PAGE
-   Two emblems, and the one line that keeps showing them honest.
+   Both emblems and the wording that says whose site this is. No band
+   behind it - the photograph shows through a gradient that fades out,
+   which is what keeps 11px type legible over a blown-out sky.
    =================================================================== */
-.masthead,body.home .masthead{background:transparent;border-bottom:0;padding:0}
-/* nothing behind them now, so the artwork carries its own shadow — a white
-   emblem over a bright sky would otherwise disappear */
-.masthead .emb{filter:drop-shadow(0 1px 3px rgba(0,0,0,.9))
-  drop-shadow(0 0 8px rgba(0,0,0,.55))}
-/* flush to the corner rather than inside the centred measure */
+.masthead,body.home .masthead{border-bottom:0;padding:0;
+  background:linear-gradient(rgba(0,0,0,.66),rgba(0,0,0,.30) 70%,rgba(0,0,0,.12))}
 .masthead>.wrap{max-width:none;width:100%;display:flex;align-items:center;
-  gap:14px;flex-wrap:wrap;padding:9px 22px}
-.mh-embs{display:flex;align-items:center;gap:11px;flex:none}
+  gap:13px;flex-wrap:wrap;padding:10px 22px}
+.mh-embs{display:flex;align-items:center;gap:10px;flex:none}
 .masthead .emb-nat-w{width:21px;height:30px}
-.masthead .emb-moh{width:38px;height:38px}
-.mh-note{font-size:10.5px;line-height:1.35;color:#c9c9c9;min-width:0}
+.masthead .emb-moh{width:40px;height:40px}
+.masthead .gname{font-size:11px;line-height:1.25;color:#e8e8e8}
+.masthead .gname .mr{display:block;font-size:10px;color:#dcdcdc}
+.masthead .mh-txt{min-width:0}
+.masthead .dep-mr{font-size:14px;color:#fff}
+.masthead .dep-en{font-size:11.5px;color:#e4e4e4}
+.masthead .mh-site{margin-left:auto;padding-left:14px;
+  border-left:1px solid rgba(255,255,255,.26)}
+.masthead .mh-site b{color:#fff}
+.masthead .mh-site span{color:#e0e0e0}
 
 /* the accessibility controls, now beside the statutory policy links */
 .gf-a11y{display:flex;align-items:center;gap:9px;flex-wrap:wrap;
@@ -115,17 +132,15 @@ ADD = """
 .gf-a11y .u-skip{position:absolute;left:-9999px}
 .gf-a11y .u-skip:focus{position:static;left:auto}
 .gf-a11y a{color:#e0e0e0}
-.gf-a11y .a11y-t{display:none}                 /* nothing left to fold */
+.gf-a11y .a11y-t{display:none}
 .gf-a11y .a11y-g{display:flex!important;align-items:center;gap:9px;flex-wrap:wrap}
 
-@media(max-width:700px){
-  .masthead>.wrap{padding:8px 16px;gap:10px}
-  .mh-note{font-size:9.5px}
+@media(max-width:820px){
+  .masthead>.wrap{padding:9px 16px;gap:10px}
+  .masthead .mh-site{margin-left:0;border-left:0;padding-left:0;width:100%}
 }
 body.hc .masthead{background:#000!important}
-body.hc .mh-note{color:#ff0!important}
 """
-
 
 def run():
     n = 0
