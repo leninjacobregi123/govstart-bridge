@@ -224,11 +224,11 @@ a{color:#fff}
 open(CSS, "w", encoding="utf-8").write(css)
 
 # ---- 5b. the layer stack, and the script that moves through it --------
-PHOTOS = [("ph-kokan",   "bg-kokan.webp"),
-          ("ph-ellora",  "bg-ellora.webp"),
-          ("ph-kaas",    "bg-kaas.webp"),
-          ("ph-sula",    "bg-sula.webp"),
-          ("ph-deeksha", "bg-deekshabhoomi.webp")]
+PHOTOS = [("ph-kokan",   "bg-kokan.webp",        "Sahyadri range, Raigad district"),
+          ("ph-ellora",  "bg-ellora.webp",       "Kailasa temple, Ellora"),
+          ("ph-kaas",    "bg-kaas.webp",         "Kaas plateau, Satara district"),
+          ("ph-sula",    "bg-sula.webp",         "Vineyards near Nashik"),
+          ("ph-deeksha", "bg-deekshabhoomi.webp","Deekshabhoomi, Nagpur")]
 
 BG_JS = """
 /* ---- the photograph behind the page -------------------------------
@@ -254,10 +254,16 @@ BG_JS = """
     if(armed) return; armed=true;
     L.forEach(paint);
   }
-  function step(){
-    i=(i+1)%L.length;
+  function mark(n){
+    i=n;
     L.forEach(function(e,k){
       if(k===i) e.setAttribute("data-on","1"); else e.removeAttribute("data-on"); });
+    var cap=document.querySelector(".hnote"), c=L[i].getAttribute("data-cap");
+    if(cap && c) cap.textContent=c;      /* the caption names what is showing */
+  }
+  function step(){
+    mark((i+1)%L.length);
+    paint(L[i]);
     timer=setTimeout(step,HOLD);
   }
   paint(L[i]);
@@ -292,13 +298,15 @@ for f in sorted(glob.glob(DOCS + "/*.html")):
     cls = PHOTO.get(name, "ph-kokan")
     s = open(f, encoding="utf-8").read()
     order = [p for p in PHOTOS if p[0] == cls] + [p for p in PHOTOS if p[0] != cls]
+    # (slug, file, caption)
     stack = ('<div class="bgshow" aria-hidden="true">'
              # a path in the markup resolves against the page, not against
              # the stylesheet, so these carry the assets/ prefix the CSS omits
-             + "".join('<i class="%s" data-src="assets/img/%s"%s></i>'
-                       % (c, f, (' data-on="1" style="background-image:url(assets/img/%s)"' % f)
+             + "".join('<i class="%s" data-src="assets/img/%s" data-cap="%s"%s></i>'
+                       % (c, f, cap,
+                          (' data-on="1" style="background-image:url(assets/img/%s)"' % f)
                           if k == 0 else "")
-                       for k, (c, f) in enumerate(order))
+                       for k, (c, f, cap) in enumerate(order))
              + "<b></b></div>")
     out = s.replace("<body>", '<body class="%s">%s' % (cls, stack), 1)
     # the national emblem is black line art drawn for a light ground; on a

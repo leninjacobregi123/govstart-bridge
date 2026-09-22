@@ -1557,10 +1557,16 @@ init();
     if(armed) return; armed=true;
     L.forEach(paint);
   }
-  function step(){
-    i=(i+1)%L.length;
+  function mark(n){
+    i=n;
     L.forEach(function(e,k){
       if(k===i) e.setAttribute("data-on","1"); else e.removeAttribute("data-on"); });
+    var cap=document.querySelector(".hnote"), c=L[i].getAttribute("data-cap");
+    if(cap && c) cap.textContent=c;      /* the caption names what is showing */
+  }
+  function step(){
+    mark((i+1)%L.length);
+    paint(L[i]);
     timer=setTimeout(step,HOLD);
   }
   paint(L[i]);

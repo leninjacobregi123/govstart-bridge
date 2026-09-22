@@ -996,7 +996,10 @@ body.hc .mp-dot[aria-current="true"] i,body.hc .mp-bar i{background:#ff0!importa
    page would read as a different site.
    =================================================================== */
 body.home .bgshow i{background-position:center 68%}
-body.home .bgshow b{background:rgba(0,0,0,.34)}      /* the picture, brighter */
+/* .44 is the floor once the picture moves: with the chrome's own .44
+   ground, 11px type clears 4.5:1 over a blown-out sky, which two of
+   these three photographs contain */
+body.home .bgshow b{background:rgba(0,0,0,.44)}      /* the picture, brighter */
 /* the chrome keeps a thin ground: over a bright sky, 11px type on bare
    photograph comes in at 2.2:1, and the picture still reads through .42 */
 body.home .utility,body.home .masthead{background:rgba(0,0,0,.44);border-bottom:0}

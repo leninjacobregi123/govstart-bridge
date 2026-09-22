@@ -50,14 +50,21 @@ def run():
     h = h.replace("<body ", '<body data-landing-done="1" ', 1)
     h = h.replace('class="ph-kokan">', 'class="ph-kokan home">', 1)
 
-    # The landing page holds one bright photograph rather than moving
-    # through five: the complaint about this page was that it was dark and
-    # busy, and a picture that changes under the claim is both.
-    h = re.sub(r'<div class="bgshow".*?</div>',
-               '<div class="bgshow" aria-hidden="true">'
-               '<i class="ph-pratapgad" data-src="assets/img/bg-pratapgad.webp" data-on="1"'
-               ' style="background-image:url(assets/img/bg-pratapgad.webp)"></i>'
-               '<b></b></div>', h, count=1, flags=re.S)
+    # The landing page moves through three photographs rather than five.
+    # The two left out are the dimmest of the set and the busiest of them,
+    # which is what made this page feel heavy; these three are open
+    # landscapes and the brightest we have.
+    LANDING = [("ph-pratapgad", "bg-pratapgad.webp", "Pratapgad fort, Satara district"),
+               ("ph-kaas",      "bg-kaas.webp",      "Kaas plateau, Satara district"),
+               ("ph-kokan",     "bg-kokan.webp",     "Sahyadri range, Raigad district")]
+    stack = ('<div class="bgshow" aria-hidden="true">'
+             + "".join('<i class="%s" data-src="assets/img/%s" data-cap="%s"%s></i>'
+                       % (c, f, cap,
+                          (' data-on="1" style="background-image:url(assets/img/%s)"' % f)
+                          if k == 0 else "")
+                       for k, (c, f, cap) in enumerate(LANDING))
+             + "<b></b></div>")
+    h = re.sub(r'<div class="bgshow".*?</div>', stack, h, count=1, flags=re.S)
 
     # ---- four stacked bars become one notice line and one row ------
     # Everything the page is obliged to carry stays: the disclaimer (this
@@ -148,7 +155,10 @@ ADD = """
    page would read as a different site.
    =================================================================== */
 body.home .bgshow i{background-position:center 68%}
-body.home .bgshow b{background:rgba(0,0,0,.34)}      /* the picture, brighter */
+/* .44 is the floor once the picture moves: with the chrome's own .44
+   ground, 11px type clears 4.5:1 over a blown-out sky, which two of
+   these three photographs contain */
+body.home .bgshow b{background:rgba(0,0,0,.44)}      /* the picture, brighter */
 /* the chrome keeps a thin ground: over a bright sky, 11px type on bare
    photograph comes in at 2.2:1, and the picture still reads through .42 */
 body.home .utility,body.home .masthead{background:rgba(0,0,0,.44);border-bottom:0}

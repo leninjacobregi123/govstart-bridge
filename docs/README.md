@@ -71,12 +71,17 @@ chrome rather than under it, the claim sits left rather than centred, and the
 navigation floats below the claim as a rounded bar instead of sitting in a
 full-width strip above it.
 
-It holds **one** photograph — Pratapgad fort — rather than moving through five.
-The complaint that produced this page was that it was dark and busy, and a
-picture that changes under the claim is both. The scrim is 0.34 here rather than
-0.62, so the photograph reads as a photograph; the chrome and every band below
-carry a ground of their own to pay for that, and each was measured rather than
-guessed.
+It moves through **three** photographs rather than five — Pratapgad fort, Kaas
+plateau and the Sahyadri range. The two left out are the dimmest of the set and
+the busiest of them, which is what made this page feel heavy; these three are
+open landscapes and the brightest we have. The caption under the claim names
+whichever one is showing.
+
+The scrim is 0.44 here rather than 0.62, so the photograph reads as a
+photograph. That is the floor once the picture moves: with the chrome's own
+0.44 ground, 11px type clears 4.5:1 over a blown-out sky, and two of these three
+photographs contain one. The chrome and every band below carry a ground of their
+own to pay for the lighter scrim, and each was measured rather than guessed.
 
 Nothing on it is white. A light bar on this one page would read as a different
 site.
