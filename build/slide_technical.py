@@ -147,6 +147,50 @@ def frame(sl, x, y, w, h, title):
     return sh
 
 
+# ---- what to say while the diagram is on screen ----------------------
+SCRIPT = """SPEAKING SCRIPT \u2014 about two minutes
+
+OPEN (5s)
+This is the whole mechanism in four phases. Follow the arrows left to right.
+
+1  CHALLENGE AUTHORING (25s)
+It starts with a department problem, not a product. In the Challenge Studio
+the officer writes the outcome they need and the KPIs that would prove it.
+The Clause Injector attaches the Rule 173(i) language that permits the
+eligibility relaxation. Then the KPI Seal hashes the whole criteria set with
+SHA-256 and publishes it \u2014 before anyone has seen a single solution. From
+this moment, the target cannot move.
+
+2  DISCOVERY AND SELECTION (25s)
+The published challenge goes to the Startup India and MSInS registries. The
+Screening Engine filters on the risk cap written into the contract, not on
+turnover \u2014 so a first-time supplier is not disqualified before being read.
+Clear the cap and you are eligible; fail it and the platform tells you which
+axis you failed on. The shortlist goes into the pilot.
+
+3  PILOT EXECUTION (25s)
+MSInS signs an Evidence Contract, milestone-paid. Note what is not happening:
+the department is not buying a product yet. The Sandbox Provisioner gives the
+startup masked, DPDP-compliant data in one taluka, and the KPI Tracker takes
+evidence at each milestone and releases payment against it. If the pilot
+fails here, the state has spent the cost of the evidence, not the cost of a
+rollout.
+
+4  VALIDATION AND SCALE-UP (30s)
+The validator named back in phase one \u2014 before any result existed \u2014
+recomputes the seal and checks the evidence against the published criteria.
+If the KPIs are met, the Tier Router picks the lawful route from facts it
+already holds: a PAC under 166(i), a limited tender to the winners, or the
+GeM catalogue. That becomes the Deployment Contract, and the department
+buys. If no route fits, it says so rather than inventing one.
+
+CLOSE (10s)
+Four phases. Everything above the dashed strip is running in the prototype
+today \u2014 you can open it and check. The four below it are integrations we
+have scoped but not built.
+"""
+
+
 def build():
     prs = Presentation()
     prs.slide_width, prs.slide_height = Inches(13.333), Inches(7.5)
@@ -257,8 +301,9 @@ def build():
     r.font.name = "Calibri"; r.font.size = Pt(11.5); r.font.bold = True
     r.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
+    sl.notes_slide.notes_text_frame.text = SCRIPT
     prs.save(OUT)
-    print("wrote", OUT)
+    print("wrote", OUT, "(speaking script in the slide notes)")
 
 
 if __name__ == "__main__":
