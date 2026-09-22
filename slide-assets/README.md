@@ -90,6 +90,26 @@ Everything here was generated from `govstart-bridge-icon.svg` plus the two clean
 
 ---
 
+## Deck slides
+
+| File | What it is |
+|---|---|
+| `technical-approach.pptx` | One 16:9 slide — the five technical stages and the four-stage architecture |
+| `key-innovations.pptx` | One 16:9 slide — six key innovations, what is built, and the numbers |
+
+Both are **editable**: every box, arrow and block is a real PowerPoint shape.
+A matching `.png` sits beside each if you only need to drop a picture in.
+Rebuild with `python3 ../build/slide_technical.py` and
+`python3 ../build/slide_innovations.py` (both need `python-pptx`).
+
+Edit the content at the top of those two files rather than in PowerPoint, so
+the slides and the site stay in step.
+
+Every number on the innovations slide was checked against the build before it
+was written down: 41 pages, zero external requests, 1,201 text styles measured
+from rendered pixels with none below WCAG AA, and 279 automated checks. If the
+site changes, re-run the suites before you re-use the slide.
+
 ## Technical Approach slide
 
 | File | What it is |

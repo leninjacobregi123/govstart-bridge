@@ -261,4 +261,5 @@ def build():
     print("wrote", OUT)
 
 
-build()
+if __name__ == "__main__":
+    build()
