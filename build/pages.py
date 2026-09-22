@@ -298,6 +298,9 @@ def page(fname, title, crumb, nav_key, content, page_step=None, feature=None):
 <meta name="description" content="GovStart Bridge — {crumb}. SIH26136 prototype for the Maharashtra State Innovation Society.">
 <title>{title} | GovStart Bridge</title>
 <link rel="stylesheet" href="assets/style.css">
+<!-- the site carries no mark of its own, and a missing icon is a 404 in
+     every console, so the request is answered with nothing on purpose -->
+<link rel="icon" href="data:,">
 </head>
 <body>
 {t}<main id="main">

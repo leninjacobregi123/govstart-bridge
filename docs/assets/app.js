@@ -1534,6 +1534,44 @@ function init(){
   if(restored)toast("Picked up where you left off. Press Reset to start the example again.");
 }
 init();
+/* ---- the photograph behind the page -------------------------------
+   Only the layer that is showing carries an image to begin with; the
+   rest are given theirs once the page is quiet, so opening a page still
+   costs one photograph rather than five.  Advancing is a timer, and it
+   stops while the tab is hidden. */
+(function(){
+  var show=document.querySelector(".bgshow");
+  if(!show) return;
+  var L=[].slice.call(show.querySelectorAll("i"));
+  if(L.length<2) return;
+  var start=L.findIndex(function(e){ return e.hasAttribute("data-on"); });
+  var i=start<0?0:start;
+  var still=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var HOLD=11000, timer=0, armed=false;
+
+  function paint(e){
+    if(e.style.backgroundImage) return;
+    e.style.backgroundImage="url("+e.getAttribute("data-src")+")";
+  }
+  function arm(){
+    if(armed) return; armed=true;
+    L.forEach(paint);
+  }
+  function step(){
+    i=(i+1)%L.length;
+    L.forEach(function(e,k){
+      if(k===i) e.setAttribute("data-on","1"); else e.removeAttribute("data-on"); });
+    timer=setTimeout(step,HOLD);
+  }
+  paint(L[i]);
+  if(still) return;                       /* one photograph, no movement */
+  setTimeout(function(){ arm(); timer=setTimeout(step,HOLD); }, 2500);
+  document.addEventListener("visibilitychange",function(){
+    if(document.hidden){ clearTimeout(timer); timer=0; }
+    else if(armed && !timer) timer=setTimeout(step,HOLD);
+  });
+})();
+
 /* ---- Mumbai playback ------------------------------------------------
    Guarded like every other renderer: absent root, nothing runs.
    Advancing is a timer and the progress bar is a CSS transition, so the

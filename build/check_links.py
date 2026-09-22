@@ -10,7 +10,7 @@ bad=[]; checked=0
 for p in sorted(pages):
     src=open(os.path.join(ROOT,p),encoding="utf-8").read()
     for href in re.findall(r'href="([^"]+)"',src):
-        if href.startswith(("http://","https://","mailto:")): continue
+        if href.startswith(("http://","https://","mailto:","data:")): continue
         if href.startswith("assets/"): continue      # checked separately below
         if href=="#": continue                       # JS-driven control
         checked+=1

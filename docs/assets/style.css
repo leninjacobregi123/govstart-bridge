@@ -2,7 +2,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
  /* structural navy — nav bar, banners, footers */
- --navy:#111;--ink:#ffffff;--body:#ebebeb;--muted:#c4c4c4;
+ --navy:#111;--ink:#ffffff;--body:#ebebeb;--muted:#dedede;
  /* primary accent is deep saffron (AA-safe with white text), not blue */
  --blue:#111;--blue-s:rgba(255,255,255,.10);--blue-l:rgba(255,255,255,.44);
  --link:#ffffff;
@@ -829,14 +829,25 @@ body.hc .steps a[aria-current="page"]{background:#000!important;color:#fff!impor
    THE PAGE SITS ON THE PHOTOGRAPH
    =================================================================== */
 html{background:#0c0c0c}
-body{background-image:linear-gradient(rgba(0,0,0,.62),rgba(0,0,0,.62)),var(--photo);
-  background-size:cover,cover;background-position:center,center 45%;
-  background-repeat:no-repeat,no-repeat;background-attachment:fixed,fixed;color:#ebebeb}
-body.ph-kokan  {--photo:url(img/bg-kokan.webp)}
-body.ph-ellora {--photo:url(img/bg-ellora.webp)}
-body.ph-kaas   {--photo:url(img/bg-kaas.webp)}
-body.ph-sula   {--photo:url(img/bg-sula.webp)}
-body.ph-deeksha{--photo:url(img/bg-deekshabhoomi.webp)}
+body{background-color:transparent;color:#ebebeb}
+
+/* The picture is a stack of fixed layers rather than a background on the
+   body, because one background cannot cross-fade into another, and because
+   background-attachment:fixed is unreliable on a phone.  The page it opens
+   on is the one its body class names; after that it moves through the set. */
+.bgshow{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.bgshow i{position:absolute;inset:0;background-size:cover;background-position:center 45%;
+  background-repeat:no-repeat;opacity:0;transition:opacity 2.2s ease}
+.bgshow i[data-on]{opacity:1}
+.bgshow b{position:absolute;inset:0;background:rgba(0,0,0,.62)}
+@media(prefers-reduced-motion:reduce){ .bgshow i{transition:none} }
+body.hc .bgshow i{display:none!important}
+/* high contrast paints .emb with the background shorthand, which resets the
+   image and leaves an empty box where an emblem should be */
+body.hc .emb{background-color:#000!important}
+body.hc .emb-nat{background-image:url(img/emblem-india.png)!important}
+body.hc .emb-nat-w{background-image:url(img/emblem-india-white.png)!important}
+body.hc .emb-moh{background-image:url(img/maha-seal.png)!important}
 
 /* --navy, --blue, --green, --red and --amber still paint dark surfaces, so
    they cannot flip.  Type that used them gets a token of its own. */
@@ -868,9 +879,13 @@ section[style*="background:var(--w)"]{background:rgba(0,0,0,.40)!important}
 .card,.lcard,.acc,.divcard,.mphoto,.taskchip,.contract,.stepchip,.door,
 .cbox,.ticket,.rev,.appcard,.vid,.proofcard,.panelled>*,.sr-box,.stage{
   background:rgba(0,0,0,.46);border-color:rgba(255,255,255,.26)}
-.minidemo,.note-a,.note-b,.statute,.quote,.acc .panel-in .quote,.rev .quote,
+.minidemo,.statute,.quote,.acc .panel-in .quote,.rev .quote,
 .gate span,.seal.live,.tier .anc,.tag,.tag.a,.tag.n{
   background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.24)}
+/* the callouts are the one panel in that family that stands on the open
+   page rather than inside a card, so a white fill would lighten the ground
+   under them instead of darkening it */
+.note-a,.note-b{background:rgba(0,0,0,.30);border-color:rgba(255,255,255,.26)}
 .acc>button:hover{background:rgba(255,255,255,.10)}
 .utility a:hover,.utility button:hover{background:rgba(255,255,255,.15);color:#fff}
 .bar{background:rgba(255,255,255,.16)}
@@ -888,6 +903,17 @@ section[style*="background:var(--w)"]{background:rgba(0,0,0,.40)!important}
   border-color:rgba(255,255,255,.6);outline:2px solid rgba(255,255,255,.35)}
 .sr-box{box-shadow:0 10px 30px rgba(0,0,0,.6)}
 .modal-in{background:rgba(12,12,12,.96);border:1px solid rgba(255,255,255,.22)}
+
+/* Muted type takes its value from the ground it is on. The photographs
+   really do blow out to pure white - three of the five reach 255 - so on
+   the open page a quiet grey cannot hold 4.5:1 and --muted is nearly white.
+   Inside anything with a ground of its own it goes back to being quiet,
+   which is where almost all of it lives. */
+.card,.lcard,.acc,.divcard,.mphoto,.taskchip,.contract,.stepchip,.door,
+.cbox,.ticket,.rev,.appcard,.vid,.proofcard,.panelled>.wrap,.sr-box,.stage,
+.minidemo,.note-a,.note-b,.statute,.quote,.flow,.hero,.cta,.bandrule,
+footer,.govfoot,.utility,.crumbs,.masthead,.strip,.protobar,header.site,
+.mplay{--muted:#c4c4c4}
 
 /* type, read the other way round */
 h1,h2,h3,h4,.brand b,.mh-site b{color:#fff}

@@ -73,7 +73,7 @@ css = re.sub(r"([^{}]*)\{([^{}]*)\}", retype, css)
 
 # ---- 3. the tokens that are only ever type, ground or rule ------------
 FLIP = {
- "--body:#333":"--body:#ebebeb",      "--muted:#666":"--muted:#c4c4c4",
+ "--body:#333":"--body:#ebebeb",      "--muted:#666":"--muted:#dedede",
  "--ink:#111":"--ink:#ffffff",        # type, a meter fill, and the QR stripes
  "--link:#111":"--link:#ffffff",
  "--line:#ddd":"--line:rgba(255,255,255,.26)",
@@ -112,14 +112,25 @@ css += """
    THE PAGE SITS ON THE PHOTOGRAPH
    =================================================================== */
 html{background:#0c0c0c}
-body{background-image:linear-gradient(rgba(0,0,0,.62),rgba(0,0,0,.62)),var(--photo);
-  background-size:cover,cover;background-position:center,center 45%;
-  background-repeat:no-repeat,no-repeat;background-attachment:fixed,fixed;color:#ebebeb}
-body.ph-kokan  {--photo:url(img/bg-kokan.webp)}
-body.ph-ellora {--photo:url(img/bg-ellora.webp)}
-body.ph-kaas   {--photo:url(img/bg-kaas.webp)}
-body.ph-sula   {--photo:url(img/bg-sula.webp)}
-body.ph-deeksha{--photo:url(img/bg-deekshabhoomi.webp)}
+body{background-color:transparent;color:#ebebeb}
+
+/* The picture is a stack of fixed layers rather than a background on the
+   body, because one background cannot cross-fade into another, and because
+   background-attachment:fixed is unreliable on a phone.  The page it opens
+   on is the one its body class names; after that it moves through the set. */
+.bgshow{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.bgshow i{position:absolute;inset:0;background-size:cover;background-position:center 45%;
+  background-repeat:no-repeat;opacity:0;transition:opacity 2.2s ease}
+.bgshow i[data-on]{opacity:1}
+.bgshow b{position:absolute;inset:0;background:rgba(0,0,0,.62)}
+@media(prefers-reduced-motion:reduce){ .bgshow i{transition:none} }
+body.hc .bgshow i{display:none!important}
+/* high contrast paints .emb with the background shorthand, which resets the
+   image and leaves an empty box where an emblem should be */
+body.hc .emb{background-color:#000!important}
+body.hc .emb-nat{background-image:url(img/emblem-india.png)!important}
+body.hc .emb-nat-w{background-image:url(img/emblem-india-white.png)!important}
+body.hc .emb-moh{background-image:url(img/maha-seal.png)!important}
 
 /* --navy, --blue, --green, --red and --amber still paint dark surfaces, so
    they cannot flip.  Type that used them gets a token of its own. */
@@ -151,9 +162,13 @@ section[style*="background:var(--w)"]{background:rgba(0,0,0,.40)!important}
 .card,.lcard,.acc,.divcard,.mphoto,.taskchip,.contract,.stepchip,.door,
 .cbox,.ticket,.rev,.appcard,.vid,.proofcard,.panelled>*,.sr-box,.stage{
   background:rgba(0,0,0,.46);border-color:rgba(255,255,255,.26)}
-.minidemo,.note-a,.note-b,.statute,.quote,.acc .panel-in .quote,.rev .quote,
+.minidemo,.statute,.quote,.acc .panel-in .quote,.rev .quote,
 .gate span,.seal.live,.tier .anc,.tag,.tag.a,.tag.n{
   background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.24)}
+/* the callouts are the one panel in that family that stands on the open
+   page rather than inside a card, so a white fill would lighten the ground
+   under them instead of darkening it */
+.note-a,.note-b{background:rgba(0,0,0,.30);border-color:rgba(255,255,255,.26)}
 .acc>button:hover{background:rgba(255,255,255,.10)}
 .utility a:hover,.utility button:hover{background:rgba(255,255,255,.15);color:#fff}
 .bar{background:rgba(255,255,255,.16)}
@@ -171,6 +186,17 @@ section[style*="background:var(--w)"]{background:rgba(0,0,0,.40)!important}
   border-color:rgba(255,255,255,.6);outline:2px solid rgba(255,255,255,.35)}
 .sr-box{box-shadow:0 10px 30px rgba(0,0,0,.6)}
 .modal-in{background:rgba(12,12,12,.96);border:1px solid rgba(255,255,255,.22)}
+
+/* Muted type takes its value from the ground it is on. The photographs
+   really do blow out to pure white - three of the five reach 255 - so on
+   the open page a quiet grey cannot hold 4.5:1 and --muted is nearly white.
+   Inside anything with a ground of its own it goes back to being quiet,
+   which is where almost all of it lives. */
+.card,.lcard,.acc,.divcard,.mphoto,.taskchip,.contract,.stepchip,.door,
+.cbox,.ticket,.rev,.appcard,.vid,.proofcard,.panelled>.wrap,.sr-box,.stage,
+.minidemo,.note-a,.note-b,.statute,.quote,.flow,.hero,.cta,.bandrule,
+footer,.govfoot,.utility,.crumbs,.masthead,.strip,.protobar,header.site,
+.mplay{--muted:#c4c4c4}
 
 /* type, read the other way round */
 h1,h2,h3,h4,.brand b,.mh-site b{color:#fff}
@@ -197,6 +223,53 @@ a{color:#fff}
 
 open(CSS, "w", encoding="utf-8").write(css)
 
+# ---- 5b. the layer stack, and the script that moves through it --------
+PHOTOS = [("ph-kokan",   "bg-kokan.webp"),
+          ("ph-ellora",  "bg-ellora.webp"),
+          ("ph-kaas",    "bg-kaas.webp"),
+          ("ph-sula",    "bg-sula.webp"),
+          ("ph-deeksha", "bg-deekshabhoomi.webp")]
+
+BG_JS = """
+/* ---- the photograph behind the page -------------------------------
+   Only the layer that is showing carries an image to begin with; the
+   rest are given theirs once the page is quiet, so opening a page still
+   costs one photograph rather than five.  Advancing is a timer, and it
+   stops while the tab is hidden. */
+(function(){
+  var show=document.querySelector(".bgshow");
+  if(!show) return;
+  var L=[].slice.call(show.querySelectorAll("i"));
+  if(L.length<2) return;
+  var start=L.findIndex(function(e){ return e.hasAttribute("data-on"); });
+  var i=start<0?0:start;
+  var still=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var HOLD=11000, timer=0, armed=false;
+
+  function paint(e){
+    if(e.style.backgroundImage) return;
+    e.style.backgroundImage="url("+e.getAttribute("data-src")+")";
+  }
+  function arm(){
+    if(armed) return; armed=true;
+    L.forEach(paint);
+  }
+  function step(){
+    i=(i+1)%L.length;
+    L.forEach(function(e,k){
+      if(k===i) e.setAttribute("data-on","1"); else e.removeAttribute("data-on"); });
+    timer=setTimeout(step,HOLD);
+  }
+  paint(L[i]);
+  if(still) return;                       /* one photograph, no movement */
+  setTimeout(function(){ arm(); timer=setTimeout(step,HOLD); }, 2500);
+  document.addEventListener("visibilitychange",function(){
+    if(document.hidden){ clearTimeout(timer); timer=0; }
+    else if(armed && !timer) timer=setTimeout(step,HOLD);
+  });
+})();
+"""
+
 # ---- 6. the script and the markup build inline styles from those tokens
 APP = os.path.join(DOCS, "assets", "app.js")
 TOKENS = ("navy", "blue", "green", "red", "amber", "violet")
@@ -210,7 +283,7 @@ js = open(APP, encoding="utf-8").read()
 for tok in TOKENS:                      # the script's are all colour or border
     js = js.replace("var(--%s)" % tok, "var(--%s-t)" % tok)
 js = js.replace("background:#f2f2f2", "background:rgba(255,255,255,.10)")
-open(APP, "w", encoding="utf-8").write(js)
+open(APP, "w", encoding="utf-8").write(js + BG_JS)
 
 # ---- 7. every page names its photograph -------------------------------
 n = 0
@@ -218,7 +291,16 @@ for f in sorted(glob.glob(DOCS + "/*.html")):
     name = os.path.basename(f)
     cls = PHOTO.get(name, "ph-kokan")
     s = open(f, encoding="utf-8").read()
-    out = s.replace("<body>", '<body class="%s">' % cls, 1)
+    order = [p for p in PHOTOS if p[0] == cls] + [p for p in PHOTOS if p[0] != cls]
+    stack = ('<div class="bgshow" aria-hidden="true">'
+             # a path in the markup resolves against the page, not against
+             # the stylesheet, so these carry the assets/ prefix the CSS omits
+             + "".join('<i class="%s" data-src="assets/img/%s"%s></i>'
+                       % (c, f, (' data-on="1" style="background-image:url(assets/img/%s)"' % f)
+                          if k == 0 else "")
+                       for k, (c, f) in enumerate(order))
+             + "<b></b></div>")
+    out = s.replace("<body>", '<body class="%s">%s' % (cls, stack), 1)
     # the national emblem is black line art drawn for a light ground; on a
     # photograph it disappears, so the inverted artwork takes over.
     out = out.replace('class="emb emb-nat"', 'class="emb emb-nat-w"')

@@ -38,16 +38,28 @@ because in both it is evidence rather than decoration:
 - **the official insignia** — the tricolour rule, and the seal of the Government
   of Maharashtra. There is no invented mark: a department's site carries the
   insignia it is entitled to carry and nothing a designer drew beside them;
-- **the photographs** — real places, in their own colours. Each page carries one,
-  fixed behind the whole document under a black scrim.
+- **the photographs** — real places, in their own colours. They sit in a stack of
+  fixed layers behind the whole document, under a black scrim, and cross-fade
+  from one to the next every eleven seconds. A page opens on the photograph its
+  body class names and then moves through the rest; `prefers-reduced-motion`
+  leaves it on the first one. Only the opening layer carries an image to begin
+  with — the others are given theirs once the page is quiet — so opening a page
+  still costs one photograph rather than five.
 
-The scrim is 0.70, and that is arithmetic rather than taste. White text needs a
+The scrim is 0.62, and that is arithmetic rather than taste. White text needs a
 background of relative luminance at or below 0.1833 to clear 4.5:1; compositing
 a pixel over black at alpha *a* scales each channel by (1 − *a*), so the
 brightest pixel a photograph can contain lands there at *a* = 0.534. Above that,
 the figure holds for any photograph whatever is in it. Bands that carry 11px
-type — the utility bar, masthead, breadcrumb — take a further 0.42 of their own,
-because a bright sky is exactly where the small type falls.
+type — the utility bar, masthead, breadcrumb — take a further ground of their
+own, because a bright sky is exactly where the small type falls.
+
+Because the background moves, every page has to hold against all five
+photographs rather than its own, so contrast is measured with the layer forced
+to **pure white**: nothing in a photograph can be brighter than that, and three
+of the five do reach it. Under that test, muted type takes its value from what
+it sits on — nearly white on the open page, quiet inside anything with a ground
+of its own, which is where almost all of it lives.
 
 Nothing is white. Cards and panels are dark glass the photograph shows through.
 
