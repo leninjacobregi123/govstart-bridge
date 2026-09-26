@@ -281,7 +281,13 @@ css = css.replace(
 # beside them.  The wordmark stays; the picture goes.
 body = re.sub(
     r'[ \t]*<span class="emblem"[^>]*>[^<]*</span>\n?', "", body)
-css = re.sub(r"\.emblem\{[^}]*\}\n?", "", css)
+# Two of the high-contrast rules name the mark alongside the real emblems
+# (`body.hc .emb,body.hc .emblem{...}`).  Deleting `.emblem{...}` out of the
+# middle of those glued each one onto the line below it, which is how
+# `body.hc body.hc .tag` - a selector that can never match - got into the
+# stylesheet.  Drop the mark from a selector list first, whole rules second.
+css = re.sub(r",[^,{}\n]*\.emblem(?=[,{])", "", css)
+css = re.sub(r"(?m)^[^,\n{}]*\.emblem\{[^}]*\}\n?", "", css)
 _logo = os.path.join(OUT, "assets", "img", "logo.svg")
 if os.path.exists(_logo):
     os.remove(_logo)

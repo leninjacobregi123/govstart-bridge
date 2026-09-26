@@ -50,7 +50,8 @@ ALIAS = {
    "gateway india mumbai shaniwar wada ajanta ellora raigad fort chikhaldara sahyadri vineyard photograph landmark",
  "schemes.html": "scheme yojana subsidy eligibility grant abhiyan",
  "templates.html": "template annexure contract clause rubric worksheet",
- "why-its-hard.html": "gap problem rule 166 157 173 constraint barrier",
+ "why-its-hard.html": "gap problem rule 166 157 173 constraint barrier gem runway startup week mahatenders eprocurement idex aditi dpiit portal existing landscape why not gem scale",
+ "judges-questions.html": "gem why not gem startup week idex objection panel judge question answer direct award smart contract",
 }
 for d in docs:
     d["a"] = ALIAS.get(d["u"], "")
