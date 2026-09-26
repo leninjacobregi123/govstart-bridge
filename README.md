@@ -50,6 +50,12 @@ Open an issue, or just tell me. Particularly useful:
 - Try **High contrast** and **मराठी** in the top bar; both are real, not decoration.
 - Anything that looks wrong about the procurement argument itself.
 
+## The working app
+
+The pilot register app (database, APIs, the baseline-gated composer) lives in its own repo,
+[sih26136](https://github.com/leninjacobregi123/sih26136); preview at
+https://leninjacobregi.me/sih26136/. This repo is the static walkthrough only.
+
 ## Structure
 
 ```
