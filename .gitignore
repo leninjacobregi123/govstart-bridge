@@ -23,3 +23,7 @@ slide-assets/key-innovations.png
 slide-assets/key-highlights.png
 slide-assets/impact-and-benefits.png
 slide-assets/impact-benefits-sih.png
+
+# API keys: never commit
+API/
+.env*
